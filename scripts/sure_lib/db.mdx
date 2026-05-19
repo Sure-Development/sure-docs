@@ -1,0 +1,149 @@
+---
+title: "DB"
+description: "Server-side oxmysql model helpers and schema push/pull commands"
+---
+
+# DB
+
+The `db` module is available on the server. It builds small model objects around `oxmysql` async exports and adds console commands for pushing Lua schemas to SQL tables or pulling SQL tables back into Lua schema files.
+
+```lua
+local db = sure.getModule('db')
+```
+
+<Warning>
+  The module calls `exports.oxmysql:query_async`, `insert_async`, `update_async`, and `execute_async`. Start `oxmysql` before resources that use the `db` module.
+</Warning>
+
+## Create a model
+
+```lua
+local users = db:schema('users', {
+  tableName = 'players'
+})
+```
+
+<ParamField path="schemaName" type="string" required>
+  Logical model name. If `tableName` is not supplied, this is also the SQL table name.
+</ParamField>
+
+<ParamField path="definition.tableName" type="string">
+  Optional SQL table override.
+</ParamField>
+
+<ParamField path="definition.fields" type="table">
+  Optional schema field map or ordered field array used by the console `push` command.
+</ParamField>
+
+## Query helpers
+
+<CodeGroup>
+
+```lua Find rows
+local rows = users:findMany({
+  where = {
+    identifier = 'license:abc',
+    id = 10
+  }
+})
+
+local row = users:findFirst({
+  where = {
+    id = 10
+  }
+})
+```
+
+```lua Create
+local insertId = users:create({
+  data = {
+    identifier = 'license:abc',
+    name = 'sure'
+  }
+})
+```
+
+```lua Update and delete
+users:update({
+  where = {
+    id = 10
+  },
+  data = {
+    name = 'changed'
+  }
+})
+
+users:delete({
+  where = {
+    id = 10
+  }
+})
+```
+
+```lua Raw
+local rows = users:raw('SELECT * FROM `players` WHERE `id` = ?', { 10 })
+```
+
+</CodeGroup>
+
+<Danger>
+  `update` and `delete` require a non-empty `where` table. sure_lib returns `nil` and logs an error instead of running broad updates or deletes without a filter.
+</Danger>
+
+## Schema files
+
+Create schema files under `db/<schemaName>.lua` in the resource that owns the database models.
+
+```lua db/users.lua
+local db = sure.getModule('db')
+
+return db:schema('users', {
+  fields = {
+    { 'id', { type = 'integer', primaryKey = true, autoIncrement = true, nullable = false } },
+    { 'identifier', { type = 'string', length = 64, nullable = false, unique = true } },
+    { 'createdAt', { type = 'timestamp', default = 'CURRENT_TIMESTAMP' } },
+  },
+})
+```
+
+## Field types
+
+| Lua type | SQL type |
+| --- | --- |
+| `integer` | `INT` |
+| `bigint` | `BIGINT` |
+| `float` | `FLOAT` |
+| `double` | `DOUBLE` |
+| `string` | `VARCHAR(length or 255)` |
+| `text` | `TEXT` |
+| `boolean` | `TINYINT(1)` |
+| `timestamp` | `TIMESTAMP` |
+| `json` | `JSON` |
+
+Field options include `length`, `nullable = false`, `default`, `autoIncrement = true`, `unique = true`, and `primaryKey = true`.
+
+## Console commands
+
+The command name is prefixed with the current resource name. For `sure_lib`, the command is `sure_lib:db`.
+
+<Tabs>
+  <Tab title="Push">
+    ```bash
+    sure_lib:db push users
+    ```
+
+    Loads `db/users.lua` and runs `CREATE TABLE IF NOT EXISTS`.
+  </Tab>
+  <Tab title="Pull">
+    ```bash
+    sure_lib:db pull users
+    ```
+
+    Reads the current database table and writes `db/users.lua` with a generated schema.
+  </Tab>
+</Tabs>
+
+<Info>
+  DB console commands are console-only. If a player source tries to run them, sure_lib logs `[sure_lib][db] db commands are console-only`.
+</Info>
+

@@ -39,8 +39,12 @@ scripts/
     validator.mdx
     listener.mdx
     track.mdx
+    config.mdx
     player.mdx
+    spawn.mdx
+    lui.mdx
     cooldown.mdx
+    db.mdx
     esx.mdx
     api-reference.mdx
 ```

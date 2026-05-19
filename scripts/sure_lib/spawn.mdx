@@ -1,0 +1,139 @@
+---
+title: "Spawn"
+description: "Spawn peds and objects with ergonomic options, proximity streaming, and scoped cleanup"
+---
+
+# Spawn
+
+The `spawn` module is available on the client. It spawns peds and objects, applies common entity options, supports proximity-based streaming with `ox_lib` points, and tracks handles for cleanup.
+
+```lua
+local spawn = sure.getModule('spawn')
+```
+
+## Spawn a ped
+
+```lua
+local handle = spawn:ped('a_m_m_business_01', {
+  x = 1,
+  y = 2,
+  z = 3
+}, 90.0, {
+  alpha = 180,
+  blockEvents = true,
+  collision = false,
+  freeze = true,
+  invincible = true,
+  networked = true,
+  scenario = 'WORLD_HUMAN_CLIPBOARD'
+})
+```
+
+## Spawn an object
+
+```lua
+local prop = spawn:object('prop_barrel_02a', {
+  x = 10,
+  y = 20,
+  z = 30
+}, {
+  freeze = true,
+  rotation = {
+    x = 0,
+    y = 0,
+    z = 90
+  }
+})
+```
+
+## Options
+
+<ParamField path="freeze" type="boolean">
+  Calls `FreezeEntityPosition(handle, freeze)`.
+</ParamField>
+
+<ParamField path="invincible" type="boolean">
+  Calls `SetEntityInvincible(handle, invincible)`.
+</ParamField>
+
+<ParamField path="collision" type="boolean">
+  Defaults to enabled. Set `false` to disable entity collision.
+</ParamField>
+
+<ParamField path="alpha" type="number">
+  Calls `SetEntityAlpha(handle, alpha, false)`.
+</ParamField>
+
+<ParamField path="networked" type="boolean">
+  Spawns the entity as networked when set to `true`.
+</ParamField>
+
+<ParamField path="rotation" type="table">
+  Object-only rotation table with `x`, `y`, and `z`.
+</ParamField>
+
+<ParamField path="blockEvents" type="boolean">
+  Ped-only option for `SetBlockingOfNonTemporaryEvents`.
+</ParamField>
+
+<ParamField path="diesOnInjury" type="boolean">
+  Ped-only option for `SetPedDiesWhenInjured`.
+</ParamField>
+
+<ParamField path="scenario" type="string">
+  Ped-only scenario passed to `TaskStartScenarioInPlace`.
+</ParamField>
+
+<ParamField path="animation" type="table">
+  Ped-only animation with `dict`, `clip`, and optional `flag`.
+</ParamField>
+
+## Proximity streaming
+
+Use `spawnOnNear` when an entity should only exist while the player is close to a point.
+
+```lua
+local entry = spawn:ped('a_m_m_business_01', coords, 180.0, {
+  spawnOnNear = {
+    coords = vector3(50, 60, 70),
+    radius = 5,
+    despawnRadius = 8,
+    onNear = function(state)
+      print(state.handle, state.distance, state.spawned)
+    end
+  }
+})
+```
+
+<Warning>
+  `spawnOnNear.coords` and `spawnOnNear.radius` are required. Without `despawnRadius`, sure_lib uses `radius * 1.5`.
+</Warning>
+
+## Scoped cleanup
+
+Scopes let you clean up a set of spawned handles and stream entries together.
+
+```lua
+local scope = spawn:scope()
+
+local object = scope:object('prop_beachflag_le', coords, {
+  alpha = 0,
+  collision = false,
+  freeze = true
+})
+
+scope:deleteAll()
+```
+
+<ParamField path="spawn:deleteAll()" type="function">
+  Deletes every globally tracked spawned entity and removes all stream points registered through the module.
+</ParamField>
+
+<ParamField path="scope:deleteAll()" type="function">
+  Deletes entities and stream entries created through that scope only.
+</ParamField>
+
+<Info>
+  sure_lib also calls `spawn:deleteAll()` when the current resource stops.
+</Info>
+

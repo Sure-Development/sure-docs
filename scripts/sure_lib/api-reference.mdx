@@ -5,7 +5,7 @@ description: "All sure_lib modules, methods, availability, and return values"
 
 # API Reference
 
-This page is a compact reference for sure_lib version `2.0.0`.
+This page is a compact reference for sure_lib version `2.2.1`.
 
 ## Module availability
 
@@ -14,8 +14,12 @@ This page is a compact reference for sure_lib version `2.0.0`.
 | `validator` | Yes | Yes |
 | `listener` | Yes | Yes |
 | `track` | Yes | Yes |
+| `config` | Yes | Yes |
 | `player` | Yes | No |
+| `spawn` | Yes | No |
+| `lui` | Yes | No |
 | `cooldown` | Yes | Yes |
+| `db` | No | Yes |
 | `esx` | No | Yes |
 
 ## Loader
@@ -59,7 +63,7 @@ This page is a compact reference for sure_lib version `2.0.0`.
 ## Track
 
 <ParamField path="track.state(stateName, initialValue)" type="function">
-  Returns a getter and setter pair.
+  Returns a getter and setter pair. The setter accepts a value or a functional update.
 </ParamField>
 
 <ParamField path="track.effect(callback, dependencies)" type="function">
@@ -80,6 +84,39 @@ This page is a compact reference for sure_lib version `2.0.0`.
   </Tab>
 </Tabs>
 
+## Config
+
+<ParamField path="config:load(filePath, schema?)" type="function">
+  Loads and caches a Lua config file. When `schema` is supplied, the cached or freshly loaded value is validated before it is returned.
+</ParamField>
+
+<ParamField path="config:reload(filePath, schema?)" type="function">
+  Reloads a Lua config file, replaces the cached value, and optionally validates it.
+</ParamField>
+
+## Spawn
+
+| Method | Description |
+| --- | --- |
+| `spawn:ped(model, coords, heading, opts?)` | Spawns a client ped or registers a proximity stream entry. |
+| `spawn:object(model, coords, opts?)` | Spawns a client object or registers a proximity stream entry. |
+| `spawn:scope()` | Creates an isolated cleanup scope with scoped `ped`, `object`, and `deleteAll` methods. |
+| `spawn:deleteAll()` | Deletes tracked spawned entities and removes stream points. |
+
+## LUI
+
+<Tabs>
+  <Tab title="Page">
+    `lui.page(pageId, pageBuilder, props?)`, `lui.render(pageId)`, `lui.open(pageId, focusOptions?)`, and `lui.close(pageId)` manage client NUI pages.
+  </Tab>
+  <Tab title="Builder nodes">
+    `text`, `button`, `input`, `select`, `textarea`, `slider`, `stack`, `row`, `panel`, `alert`, `tooltip`, `badge`, `typography`, `accordion`, `tabs`, `table`, `carousel`, `presence`, `motion*`, and `foreach`.
+  </Tab>
+  <Tab title="Declarative nodes">
+    The same node factories are available directly on `lui`, plus `lui.list(source, render, props?)`, `lui.fragment(children)`, and `lui.component(component, ...)`.
+  </Tab>
+</Tabs>
+
 ## Cooldown
 
 <Tabs>
@@ -90,6 +127,20 @@ This page is a compact reference for sure_lib version `2.0.0`.
     `getRemaining(key, position)`, `start(key, position, durationMs?)`, `ready(callback)`, and `all()` manage client cooldown reads and updates.
   </Tab>
 </Tabs>
+
+## DB
+
+| Method | Description |
+| --- | --- |
+| `db:schema(schemaName, definition?)` | Creates a model object. `definition.tableName` overrides the SQL table name. |
+| `model:findMany({ where? })` | Runs `SELECT *` with optional equality filters. |
+| `model:findFirst({ where? })` | Runs `SELECT * ... LIMIT 1` and returns one row or `nil`. |
+| `model:create({ data })` | Inserts sorted data fields and returns the insert id from oxmysql. |
+| `model:update({ data, where })` | Updates rows. A non-empty `where` clause is required. |
+| `model:delete({ where })` | Deletes rows. A non-empty `where` clause is required. |
+| `model:raw(sql, params?)` | Runs a raw `query_async` call. |
+
+Console command: `sure_lib:db push <schemaName>` creates a table from `db/<schemaName>.lua`; `sure_lib:db pull <targetTable>` writes a schema file from the current database table.
 
 ## ESX
 
@@ -108,4 +159,3 @@ This page is a compact reference for sure_lib version `2.0.0`.
 <Callout icon="list-check" color="#ffffff">
   All ESX helpers return a boolean. `false` means invalid input, missing player, malformed transaction data, or an unknown transaction action.
 </Callout>
-

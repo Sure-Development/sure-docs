@@ -5,7 +5,7 @@ description: "Install sure_lib and load your first module"
 
 # Getting Started
 
-<Badge icon="package" color="white" size="sm">sure_lib 2.0.0</Badge>
+<Badge icon="package" color="white" size="sm">sure_lib 2.2.1</Badge>
 
 This guide installs sure_lib into a consuming FiveM resource and loads a first module through the shared loader.
 
@@ -19,6 +19,10 @@ This guide installs sure_lib into a consuming FiveM resource and loads a first m
     `ox_lib` and `es_extended` must start before `sure_lib`.
   </Card>
 </Columns>
+
+<Info>
+  The `db` module also expects `oxmysql` to be available because it calls `exports.oxmysql:*_async` methods.
+</Info>
 
 ## Install
 
@@ -51,8 +55,14 @@ dependencies {
 }
 ```
 
+If you use the Lua UI module, point your consuming resource at the bundled renderer.
+
+```lua fxmanifest.lua
+ui_page 'https://cfx-nui-sure_lib/web/lui/index.html'
+```
+
 <Warning>
-  Version `2.0.0` uses `@sure_lib/init.lua` and `sure.getModule(...)`. Keep consuming resources on this loader shape so examples and module resolution stay consistent.
+  Version `2.2.1` uses `@sure_lib/init.lua` and `sure.getModule(...)`. Keep consuming resources on this loader shape so examples and module resolution stay consistent.
 </Warning>
 
 ## Load a module
@@ -76,19 +86,33 @@ dependencies {
   <Tab title="Client">
     ```lua client.lua
     local player = sure.player
+    local lui = sure.getModule('lui')
 
     player.waitUntilLoaded()
 
     print(player.serverId, player.health, player.coords)
     print(player.inventory.bread and player.inventory.bread.count or 0)
+
+    lui.page('hello', function(ui)
+      ui.panel(function()
+        ui.text('Hello from Lua UI')
+      end)
+    end)
     ```
   </Tab>
   <Tab title="Server">
     ```lua server.lua
     local esx = sure.getModule('esx')
+    local db = sure.getModule('db')
+    local users = db:schema('users', { tableName = 'users' })
 
     RegisterCommand('givebread', function(source)
       esx.giveItem(source, 'bread', 1)
+      users:create({
+        data = {
+          identifier = GetPlayerIdentifierByType(source, 'license')
+        }
+      })
     end, false)
     ```
   </Tab>
@@ -98,7 +122,7 @@ dependencies {
 
 <AccordionGroup>
   <Accordion title="sure.getModule returns nil">
-    Confirm the module name is valid and that you are requesting it from a supported runtime. For example, `player` only exists on the client and `esx` only exists on the server.
+    Confirm the module name is valid and that you are requesting it from a supported runtime. For example, `player`, `spawn`, and `lui` only exist on the client, while `esx` and `db` only exist on the server.
   </Accordion>
   <Accordion title="ESX data is empty on client">
     Call `sure.player.waitUntilLoaded()` before reading player data during resource startup.

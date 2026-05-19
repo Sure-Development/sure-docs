@@ -1,0 +1,196 @@
+---
+title: "LUI"
+description: "Lua-driven NUI rendering with reactive state, bundled components, motion, and Iconify icons"
+---
+
+# LUI
+
+`lui` is the client-side Lua UI module added in sure_lib `2.2.x`. It renders Lua node trees into the bundled NUI renderer at `web/lui/index.html`, routes NUI events back into Lua callbacks, and re-renders when tracked state changes.
+
+```lua
+local lui = sure.getModule('lui')
+local track = sure.getModule('track')
+```
+
+## fxmanifest setup
+
+Any resource that opens LUI pages should use the sure_lib renderer as its `ui_page`.
+
+```lua fxmanifest.lua
+ui_page 'https://cfx-nui-sure_lib/web/lui/index.html'
+
+shared_script '@sure_lib/init.lua'
+client_script 'client.lua'
+
+dependencies {
+  'ox_lib',
+  'sure_lib'
+}
+```
+
+<Tip>
+  Enable renderer debug traces with `?luiDebug=1` or `localStorage.setItem('sure:lui:debug', '1')` in NUI DevTools.
+</Tip>
+
+## Builder pages
+
+`lui.page(pageId, function(ui) ... end, props?)` renders immediately and stores the page. Use `lui.open(pageId)` and `lui.close(pageId)` to control NUI focus and visibility.
+
+```lua client.lua
+local count, setCount = track.state('count', 0)
+
+lui.page('counter', function(ui)
+  ui.panel({
+    className = 'w-[360px]'
+  }, function()
+    ui.typography('Counter', {
+      variant = 'h2'
+    })
+    ui.text(count)
+    ui.button('Increment', function()
+      setCount(function(value)
+        return value + 1
+      end)
+    end, {
+      iconComponent = 'lucide:plus'
+    })
+  end)
+end, {
+  font = 'Inter, sans-serif',
+  theme = {
+    ink = '#ffffff',
+    muted = '#d4d4d8'
+  }
+})
+
+lui.open('counter', {
+  focus = true,
+  cursor = true
+})
+```
+
+## Declarative node trees
+
+LUI also exposes factories directly on `lui`, so larger interfaces can be split into component functions.
+
+```lua
+local function Header(title)
+  return lui.panel({
+    className = 'header'
+  }, {
+    lui.text(title),
+    lui.button('Close', function()
+      lui.close('dashboard')
+    end, {
+      endIconComponent = 'lucide:x'
+    })
+  })
+end
+
+lui.page('dashboard', lui.stack({
+  className = 'page'
+}, {
+  Header('Dashboard'),
+  lui.row({}, {
+    lui.badge('Live', {
+      iconComponent = 'lucide:activity'
+    }),
+    lui.typography('Ready', {
+      variant = 'muted'
+    })
+  })
+}))
+```
+
+## Reactive rendering
+
+Tracked values can be passed directly into text, typography, inputs, selects, sliders, tables, lists, and other node props. LUI records dependencies while building the page and sends patches when those states change.
+
+```lua
+local items, setItems = track.state('items', {
+  {
+    id = 'bread',
+    label = 'Bread'
+  }
+})
+
+lui.page('inventory', function(ui)
+  ui.foreach(items, function(item, index, itemUi)
+    itemUi.text(index .. ': ' .. item.label)
+  end, {
+    keyBy = 'id'
+  })
+end)
+
+setItems(function(current)
+  current[#current + 1] = {
+    id = 'water',
+    label = 'Water'
+  }
+
+  return current
+end)
+```
+
+## Page API
+
+<ParamField path="lui.page(pageId, pageBuilder, props?)" type="function" required>
+  Registers and renders a page. `pageBuilder` may be a callback builder or a declarative node tree.
+</ParamField>
+
+<ParamField path="lui.render(pageId)" type="function">
+  Re-renders an existing page and sends patches when the tree changed.
+</ParamField>
+
+<ParamField path="lui.open(pageId, focusOptions?)" type="function">
+  Marks a page visible, renders it, sends a visibility message, and calls `SetNuiFocus`.
+</ParamField>
+
+<ParamField path="lui.close(pageId)" type="function">
+  Marks a page hidden, clears NUI focus, and sends a visibility message.
+</ParamField>
+
+## Components
+
+<AccordionGroup>
+  <Accordion title="Layout">
+    `stack`, `row`, and `panel` create layout containers. Common props include `className`, `classBase`, `gap`, `align`, `width`, `font`, and `theme`.
+  </Accordion>
+  <Accordion title="Controls">
+    `button`, `input`, `select`, `textarea`, and `slider` support event callbacks through `onPress` or `onChange`. Callback payloads are passed from NUI to Lua.
+  </Accordion>
+  <Accordion title="Display">
+    `alert`, `badge`, `typography`, `accordion`, `tabs`, `table`, `carousel`, and `tooltip` cover common shadcn-like UI surfaces.
+  </Accordion>
+  <Accordion title="Motion">
+    `presence`, `animatePresence`, `motion`, `motionDiv`, `motionRow`, `motionStack`, `motionList`, `motionListItem`, `motionItem`, `motionSection`, `motionButton`, and `motionText` forward animation props such as `initial`, `animate`, `exit`, `whileTap`, `layout`, and `transition`.
+  </Accordion>
+  <Accordion title="Lists and conditions">
+    Builder pages support `when`, `ifElse`, `unless`, and `foreach`. Declarative pages support `lui.list(source, render, props?)`, `lui.fragment(children)`, and `lui.component(component, ...)`.
+  </Accordion>
+</AccordionGroup>
+
+## Icons and styling
+
+LUI supports text icons and Iconify-style icon component names.
+
+```lua
+ui.button('Save', function() end, {
+  icon = {
+    name = 'lucide:save',
+    width = 16
+  },
+  endIcon = '->'
+})
+
+ui.badge('Ready', {
+  iconComponent = 'lucide:check'
+})
+```
+
+Several composed components preserve part-specific class props, such as `triggerClassName`, `menuClassName`, `activeOptionClassName`, `rangeClassName`, `thumbClassName`, `contentClassName`, `titleClassName`, and active tab class props.
+
+<Check>
+  The bundled renderer includes controls, display components, motion helpers, runtime utility classes, and Iconify-powered Lucide icons, so consuming resources can describe UI from Lua without writing HTML.
+</Check>
+

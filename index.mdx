@@ -9,9 +9,9 @@ description: "Modern Lua utilities for FiveM resources"
 
 # sure_lib
 
-<Badge icon="package" color="white" size="sm">v2.0.0</Badge> <Badge icon="terminal" color="surface" size="sm">Lua 5.4</Badge> <Badge icon="server" color="surface" size="sm">FiveM</Badge>
+<Badge icon="package" color="white" size="sm">v2.2.1</Badge> <Badge icon="terminal" color="surface" size="sm">Lua 5.4</Badge> <Badge icon="server" color="surface" size="sm">FiveM</Badge>
 
-sure_lib is a modern-first Lua 5.4 utility library for FiveM resources. It gives resource authors a small set of focused modules for validation, event safety, reactive state, cooldown synchronization, ESX transactions, and client player shortcuts.
+sure_lib is a modern-first Lua 5.4 utility library for FiveM resources. It gives resource authors focused modules for validation, event safety, reactive state, config loading, entity spawning, cooldown synchronization, database models, ESX transactions, player shortcuts, and Lua-driven NUI rendering.
 
 <CardGroup cols={2}>
   <Card title="Start with installation" icon="rocket" href="scripts/sure_lib/getting-started.mdx">
@@ -26,10 +26,13 @@ sure_lib is a modern-first Lua 5.4 utility library for FiveM resources. It gives
   <Card title="Reference every API" icon="list-check" href="scripts/sure_lib/api-reference.mdx">
     Scan method signatures, parameters, return values, and runtime availability.
   </Card>
+  <Card title="Build Lua UI" icon="panels-top-left" href="scripts/sure_lib/lui.mdx">
+    Render bundled NUI pages from Lua node trees, reactive state, and motion components.
+  </Card>
 </CardGroup>
 
 <Info>
-  This documentation is written for the latest `sure_lib` repository state at commit `2ca2c45` and resource version `2.0.0`.
+  This documentation is written for the latest `sure_lib` repository state at commit `30b3cfd` and resource version `2.2.1`.
 </Info>
 
 ## Runtime map
@@ -47,9 +50,13 @@ flowchart LR
   Shared --> Validator["validator"]
   Shared --> Listener["listener"]
   Shared --> Track["track"]
+  Shared --> Config["config"]
   Client --> Player["player"]
+  Client --> Spawn["spawn"]
+  Client --> LUI["lui"]
   Client --> ClientCooldown["cooldown"]
   Server --> ESX["esx"]
+  Server --> DB["db"]
   Server --> ServerCooldown["cooldown"]
 ```
 
@@ -60,9 +67,9 @@ flowchart LR
     Add `shared_script '@sure_lib/init.lua'` to any resource that consumes sure_lib.
   </Step>
   <Step title="Load only what you need">
-    Call `sure.getModule('validator')`, `sure.getModule('cooldown')`, or another module from the side where it exists.
+    Call `sure.getModule('validator')`, `sure.getModule('lui')`, `sure.getModule('db')`, or another module from the side where it exists.
   </Step>
   <Step title="Keep boundaries explicit">
-    Use shared modules for cross-side logic, client modules for local player state, and server modules for authoritative ESX or cooldown state.
+    Use shared modules for cross-side logic, client modules for local player/UI work, and server modules for authoritative database, ESX, or cooldown state.
   </Step>
 </Steps>

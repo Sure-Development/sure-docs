@@ -52,15 +52,25 @@
             "pages": [
               "scripts/sure_lib/validator",
               "scripts/sure_lib/listener",
-              "scripts/sure_lib/track"
+              "scripts/sure_lib/track",
+              "scripts/sure_lib/config"
             ]
           },
           {
-            "group": "Runtime Modules",
+            "group": "Client Modules",
             "icon": "activity",
             "pages": [
               "scripts/sure_lib/player",
+              "scripts/sure_lib/spawn",
+              "scripts/sure_lib/lui"
+            ]
+          },
+          {
+            "group": "Server Modules",
+            "icon": "database",
+            "pages": [
               "scripts/sure_lib/cooldown",
+              "scripts/sure_lib/db",
               "scripts/sure_lib/esx"
             ]
           },

@@ -27,9 +27,9 @@ setAmount(2)
   Effects are dependency based. Updating a different state will not trigger an effect unless that state's getter is included in the dependency list.
 </Check>
 
-## Tables are cloned
+## Tables and functional updates
 
-When the initial value or next value is a table, sure_lib deep-clones it at the state boundary. This prevents accidental mutation of stored state through an old table reference.
+When the initial value, returned value, or next value is a table, sure_lib deep-clones it at the state boundary. This prevents accidental mutation of stored state through an old table reference.
 
 ```lua
 local profile, setProfile = track.state('profile', {
@@ -48,6 +48,21 @@ setProfile({
 print(profile().level) -- 2
 ```
 
+Setters also accept a function. The function receives a copied current value and returns the next value.
+
+```lua
+local notices, setNotices = track.state('notices', {})
+
+setNotices(function(items)
+  items[#items + 1] = {
+    id = 'n-1',
+    message = 'Saved'
+  }
+
+  return items
+end)
+```
+
 ## API
 
 <ParamField path="state(stateName, initialValue)" type="function" required>
@@ -59,7 +74,7 @@ print(profile().level) -- 2
 </ResponseField>
 
 <ResponseField name="setter" type="function">
-  Call the setter with a new value to update state and notify dependent effects.
+  Call the setter with a new value or a function `(currentValue) -> nextValue` to update state and notify dependent effects.
 </ResponseField>
 
 <ParamField path="effect(callback, dependencies)" type="function" required>
@@ -69,4 +84,3 @@ print(profile().level) -- 2
 <Tip>
   Use `track` for local derived behavior inside one resource. It is not a network replication layer.
 </Tip>
-

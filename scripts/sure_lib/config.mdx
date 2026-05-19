@@ -1,0 +1,69 @@
+---
+title: "Config"
+description: "Load cached Lua configuration files with optional schema validation"
+---
+
+# Config
+
+The `config` module loads Lua configuration files from the consuming resource and caches the result. It can validate loaded values with the `validator` module before returning them.
+
+```lua
+local config = sure.getModule('config')
+local validator = sure.getModule('validator')
+```
+
+## Load a config file
+
+```lua config/settings.lua
+return {
+  shopName = 'Sure Market',
+  taxRate = 0.1,
+  coords = vector3(1, 2, 3)
+}
+```
+
+```lua shared.lua
+local schema = validator.object({
+  shopName = validator.string().required(),
+  taxRate = validator.number().min(0).max(1),
+})
+
+local settings = config:load('config/settings.lua', schema)
+print(settings.shopName)
+```
+
+<Info>
+  File paths are normalized before loading, so `config/settings.lua` resolves through the same module-style path as `config.settings`.
+</Info>
+
+## Cache and reload
+
+<Tabs>
+  <Tab title="load">
+    `config:load(filePath, schema?)` returns the cached value after the first read. If you pass a schema later, the cached value is still validated before it is returned.
+  </Tab>
+  <Tab title="reload">
+    `config:reload(filePath, schema?)` reads the file again, replaces the cached value, and optionally validates it.
+  </Tab>
+</Tabs>
+
+```lua
+local first = config:load('config/settings.lua')
+local cached = config:load('config/settings.lua')
+local fresh = config:reload('config/settings.lua')
+```
+
+## Safe environment
+
+Config files run with a small environment that includes common Lua helpers and vector constructors.
+
+| Available | Notes |
+| --- | --- |
+| `math`, `table`, `string` | Standard helper libraries. |
+| `pairs`, `ipairs`, `tonumber`, `tostring`, `type` | Common functions for building config tables. |
+| `vector3`, `vector4` | FiveM vector constructors. |
+
+<Warning>
+  A missing file raises `[sure_lib][config] cannot load file: <path>`. A schema failure raises `[sure_lib][config] validation failed in <path>: ...`.
+</Warning>
+
