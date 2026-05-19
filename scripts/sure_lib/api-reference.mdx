@@ -1,0 +1,111 @@
+---
+title: "API Reference"
+description: "All sure_lib modules, methods, availability, and return values"
+---
+
+# API Reference
+
+This page is a compact reference for sure_lib version `2.0.0`.
+
+## Module availability
+
+| Module | Client | Server |
+| --- | --- | --- |
+| `validator` | Yes | Yes |
+| `listener` | Yes | Yes |
+| `track` | Yes | Yes |
+| `player` | Yes | No |
+| `cooldown` | Yes | Yes |
+| `esx` | No | Yes |
+
+## Loader
+
+<ParamField path="sure.getModule(name)" type="function" required>
+  Loads a module by name from the current runtime side.
+</ParamField>
+
+<ResponseField name="module" type="table | nil">
+  Returns a module table or `nil` when unavailable.
+</ResponseField>
+
+## Validator
+
+<AccordionGroup>
+  <Accordion title="Builders" defaultOpen>
+    `object(fields)`, `array(itemRule)`, `string()`, `number()`, `integer()`, `boolean()`, and `callback()` create rules.
+  </Accordion>
+  <Accordion title="Rule methods">
+    `required(message?)`, `message(message)`, `min(value)`, `max(value)`, `between(min, max)`, `oneOf(values)`, and `parse(data)`.
+  </Accordion>
+  <Accordion title="Return and errors">
+    `parse(data)` returns `true` when data is valid. It raises `Validation Error: ...` when data is invalid.
+  </Accordion>
+</AccordionGroup>
+
+## Listener
+
+<ParamField path="listener:on(eventName, callback)" type="function">
+  Registers a local event.
+</ParamField>
+
+<ParamField path="listener:onNet(eventName, callback)" type="function">
+  Registers a network event.
+</ParamField>
+
+<ParamField path="listenerMeta:expect(...validators)" type="function">
+  Validates positional event parameters before the callback runs.
+</ParamField>
+
+## Track
+
+<ParamField path="track.state(stateName, initialValue)" type="function">
+  Returns a getter and setter pair.
+</ParamField>
+
+<ParamField path="track.effect(callback, dependencies)" type="function">
+  Runs `callback` whenever one of the dependency getters changes.
+</ParamField>
+
+## Player
+
+<Tabs>
+  <Tab title="Data">
+    `data`, `inventory`, `accounts`, and `loadout` read current ESX player data. Inventory and account lists support lookup by name. Loadout supports normalized weapon lookup.
+  </Tab>
+  <Tab title="State">
+    `loaded`, `ped`, `health`, `armor`, `coords`, `vehicle`, `serverId`, and `currentVehicleProperties` expose common client state.
+  </Tab>
+  <Tab title="Lifecycle">
+    `waitUntilLoaded()` waits until `ESX.IsPlayerLoaded()` returns true.
+  </Tab>
+</Tabs>
+
+## Cooldown
+
+<Tabs>
+  <Tab title="Server">
+    `define(key, definition)` registers a cooldown definition with `initialDurationMs`, `durationMs`, optional `pauseTimerOn`, and optional `resetAfterZeroTicks`.
+  </Tab>
+  <Tab title="Client">
+    `getRemaining(key, position)`, `start(key, position, durationMs?)`, `ready(callback)`, and `all()` manage client cooldown reads and updates.
+  </Tab>
+</Tabs>
+
+## ESX
+
+| Method | Description |
+| --- | --- |
+| `giveItem(playerSource, itemName, amount)` | Give one inventory item. |
+| `giveItems(playerSource, items)` | Give multiple inventory items. |
+| `removeItem(playerSource, itemName, amount)` | Remove one inventory item. |
+| `removeItems(playerSource, items)` | Remove multiple inventory items. |
+| `addMoney(playerSource, accountName, amount)` | Add account money. |
+| `addMoneyEntries(playerSource, accounts)` | Add multiple account entries. |
+| `removeMoney(playerSource, accountName, amount)` | Remove account money. |
+| `removeMoneyEntries(playerSource, accounts)` | Remove multiple account entries. |
+| `transactions(playerSource, entries)` | Apply low-level action batches. |
+
+<Callout icon="list-check" color="#ffffff">
+  All ESX helpers return a boolean. `false` means invalid input, missing player, malformed transaction data, or an unknown transaction action.
+</Callout>
+

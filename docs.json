@@ -1,43 +1,74 @@
 {
   "$schema": "https://mintlify.com/docs.json",
-  "theme": "willow",
-  "name": "Sure Documentation",
+  "theme": "linden",
+  "name": "sure_lib",
+  "description": "Developer documentation for sure_lib, a modern Lua 5.4 utility library for FiveM resources.",
   "colors": {
-    "primary": "#999",
-    "light": "#eee",
-    "dark": "#888"
+    "primary": "#ffffff",
+    "light": "#ffffff",
+    "dark": "#ffffff"
+  },
+  "appearance": {
+    "default": "dark",
+    "strict": true
+  },
+  "background": {
+    "color": {
+      "light": "#000000",
+      "dark": "#000000"
+    }
+  },
+  "icons": {
+    "library": "lucide"
+  },
+  "styling": {
+    "codeblocks": "dark",
+    "eyebrows": "breadcrumbs"
   },
   "favicon": "/favicon.png",
+  "logo": {
+    "light": "/logo/light_logo.png",
+    "dark": "/logo/light_logo.png"
+  },
   "navigation": {
+    "directory": "card",
     "tabs": [
       {
-        "tab": "Guides",
+        "tab": "sure_lib",
+        "icon": "package",
         "groups": [
           {
-            "group": "Getting Started",
+            "group": "Start Here",
+            "icon": "rocket",
+            "root": "scripts/sure_lib/overview",
             "pages": [
-              "index"
+              "scripts/sure_lib/getting-started",
+              "scripts/sure_lib/module-loader"
             ]
           },
           {
-            "group": "Resources",
+            "group": "Shared Modules",
+            "icon": "boxes",
             "pages": [
-              {
-                "group": "sure_lib",
-                "icon": "code",
-                "pages": [
-                  "scripts/sure_lib/getting-started"
-                ]
-              },
-              {
-                "group": "ns_async",
-                "icon": "code",
-                "pages": [
-                  "scripts/ns_async/getting-started",
-                  "scripts/ns_async/parallel",
-                  "scripts/ns_async/parallel-limit"
-                ]
-              }
+              "scripts/sure_lib/validator",
+              "scripts/sure_lib/listener",
+              "scripts/sure_lib/track"
+            ]
+          },
+          {
+            "group": "Runtime Modules",
+            "icon": "activity",
+            "pages": [
+              "scripts/sure_lib/player",
+              "scripts/sure_lib/cooldown",
+              "scripts/sure_lib/esx"
+            ]
+          },
+          {
+            "group": "Reference",
+            "icon": "list-check",
+            "pages": [
+              "scripts/sure_lib/api-reference"
             ]
           }
         ]
@@ -46,38 +77,58 @@
     "global": {
       "anchors": [
         {
-          "anchor": "Documentation",
-          "href": "https://999s.mintlify.app/",
-          "icon": "book-open-cover"
+          "anchor": "GitHub",
+          "href": "https://github.com/Sure-Development/sure_lib",
+          "icon": "github"
         },
         {
-          "anchor": "Portfolio",
-          "href": "https://portfolio.e2ends.xyz",
-          "icon": "desktop"
+          "anchor": "Support",
+          "href": "mailto:fx.frame009@gmail.com",
+          "icon": "mail"
         }
       ]
     }
   },
-  "logo": {
-    "light": "/logo/dark_logo.png",
-    "dark": "/logo/light_logo.png"
-  },
   "navbar": {
     "links": [
       {
+        "type": "github",
+        "href": "https://github.com/Sure-Development/sure_lib"
+      },
+      {
         "label": "Support",
-        "href": "mailto:fx.frame009@gmail.com"
+        "href": "mailto:fx.frame009@gmail.com",
+        "icon": "mail"
       }
     ],
     "primary": {
       "type": "button",
-      "label": "Dashboard",
-      "href": "https://dashboard.mintlify.com"
+      "label": "Get sure_lib",
+      "href": "https://github.com/Sure-Development/sure_lib"
     }
   },
   "footer": {
     "socials": {
-      "github": "https://github.com/mysbryce"
-    }
+      "github": "https://github.com/Sure-Development"
+    },
+    "links": [
+      {
+        "header": "sure_lib",
+        "items": [
+          {
+            "label": "Overview",
+            "href": "/scripts/sure_lib/overview"
+          },
+          {
+            "label": "API Reference",
+            "href": "/scripts/sure_lib/api-reference"
+          }
+        ]
+      }
+    ]
+  },
+  "contextual": {
+    "options": ["copy", "view", "chatgpt", "claude", "cursor"],
+    "display": "toc"
   }
 }

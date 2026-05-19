@@ -1,0 +1,72 @@
+---
+title: "Track"
+description: "Reactive state and dependency effects"
+---
+
+# Track
+
+The `track` module gives you a compact reactive state primitive inspired by signal-style APIs. A state returns a getter and setter. Effects subscribe to one or more getters and run when a subscribed state changes.
+
+```lua
+local track = sure.getModule('track')
+```
+
+## State and effect
+
+```lua
+local amount, setAmount = track.state('amount', 1)
+
+track.effect(function()
+  print(('Amount changed to %s'):format(amount()))
+end, { amount })
+
+setAmount(2)
+```
+
+<Check>
+  Effects are dependency based. Updating a different state will not trigger an effect unless that state's getter is included in the dependency list.
+</Check>
+
+## Tables are cloned
+
+When the initial value or next value is a table, sure_lib deep-clones it at the state boundary. This prevents accidental mutation of stored state through an old table reference.
+
+```lua
+local profile, setProfile = track.state('profile', {
+  name = 'Sure',
+  level = 1
+})
+
+local current = profile()
+current.level = 99
+
+setProfile({
+  name = 'Sure',
+  level = 2
+})
+
+print(profile().level) -- 2
+```
+
+## API
+
+<ParamField path="state(stateName, initialValue)" type="function" required>
+  Creates a reactive state. `stateName` is used internally to connect dependencies to effects.
+</ParamField>
+
+<ResponseField name="getter" type="function">
+  Call the getter with no arguments to read the current value: `amount()`.
+</ResponseField>
+
+<ResponseField name="setter" type="function">
+  Call the setter with a new value to update state and notify dependent effects.
+</ResponseField>
+
+<ParamField path="effect(callback, dependencies)" type="function" required>
+  Registers a callback that runs when any getter in `dependencies` changes.
+</ParamField>
+
+<Tip>
+  Use `track` for local derived behavior inside one resource. It is not a network replication layer.
+</Tip>
+

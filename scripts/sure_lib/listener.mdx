@@ -1,0 +1,86 @@
+---
+title: "Listener"
+description: "Validated local and network event listeners"
+---
+
+# Listener
+
+The `listener` module wraps FiveM event registration and validates arguments before your callback runs. It works with schemas from the `validator` module.
+
+```lua
+local listener = sure.getModule('listener')
+local v = sure.getModule('validator')
+```
+
+## Local events
+
+```lua
+listener
+  :on('inventory:useItem', function(itemName, amount)
+    print(('Use %sx %s'):format(amount, itemName))
+  end)
+  :expect(
+    v.string().required(),
+    v.integer().min(1)
+  )
+```
+
+## Network events
+
+```lua
+listener
+  :onNet('shop:buy', function(itemName, amount)
+    -- This callback only runs when both arguments pass validation.
+  end)
+  :expect(
+    v.string().required(),
+    v.integer().between(1, 100)
+  )
+```
+
+## API
+
+<ParamField path="on(eventName, callback)" type="function" required>
+  Registers a local event through `AddEventHandler`.
+</ParamField>
+
+<ParamField path="onNet(eventName, callback)" type="function" required>
+  Registers a network event through `RegisterNetEvent`.
+</ParamField>
+
+<ParamField path="expect(...validators)" type="function">
+  Attaches validators to positional event arguments. Argument 1 is checked by validator 1, argument 2 by validator 2, and so on.
+</ParamField>
+
+<ResponseField name="listenerMeta" type="table">
+  `on` and `onNet` return a metadata table with `expect(...)` so the validation contract can be chained close to the callback.
+</ResponseField>
+
+<Danger>
+  A failed parameter validation prints an error and raises. Keep validators strict for trusted internal events and wrap external flows with server-side permission checks where needed.
+</Danger>
+
+## Pattern
+
+<Tabs>
+  <Tab title="Client">
+    ```lua client.lua
+    listener
+      :onNet('sure:notify', function(message)
+        lib.notify({ description = message })
+      end)
+      :expect(v.string().required())
+    ```
+  </Tab>
+  <Tab title="Server">
+    ```lua server.lua
+    listener
+      :onNet('sure:claimReward', function(rewardId)
+        local source = source
+        -- Validate permissions before paying rewards.
+      end)
+      :expect(v.string().required())
+    ```
+  </Tab>
+</Tabs>
+

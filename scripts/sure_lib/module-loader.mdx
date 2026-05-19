@@ -1,0 +1,70 @@
+---
+title: "Module Loader"
+description: "How sure.getModule resolves shared, client, and server modules"
+---
+
+# Module Loader
+
+The shared loader creates a global `sure` table and exposes `sure.getModule(name)`. It resolves the requested module by name, checks the current runtime side, and requires the correct Lua file.
+
+<Info>
+  The loader is imported with `shared_script '@sure_lib/init.lua'`. On the client, `sure.player` is automatically assigned to the client player module.
+</Info>
+
+## Resolution table
+
+| Name | Client | Server |
+| --- | --- | --- |
+| `validator` | Shared module | Shared module |
+| `listener` | Shared module | Shared module |
+| `track` | Shared module | Shared module |
+| `player` | Client module | `nil` |
+| `cooldown` | Client module | Server module |
+| `esx` | `nil` | Server module |
+
+## API shape
+
+<ParamField path="name" type="string" required>
+  Module name. Names are case-insensitive in practice because the loader lowercases the input.
+</ParamField>
+
+<ResponseField name="module" type="table | nil">
+  Returns the module table when the module exists on the current side. Returns `nil` for unknown modules, non-string names, or side-specific modules requested from the wrong side.
+</ResponseField>
+
+```lua shared.lua
+local validator = sure.getModule('validator')
+local cooldown = sure.getModule('cooldown')
+local missing = sure.getModule('missing')
+```
+
+## Recommended pattern
+
+<CodeGroup>
+
+```lua client.lua
+local validator = sure.getModule('validator')
+local cooldown = sure.getModule('cooldown')
+local player = sure.player
+
+if not cooldown then
+  error('cooldown module is not available on this side')
+end
+```
+
+```lua server.lua
+local validator = sure.getModule('validator')
+local cooldown = sure.getModule('cooldown')
+local esx = sure.getModule('esx')
+
+if not esx then
+  error('esx module is not available on this side')
+end
+```
+
+</CodeGroup>
+
+<Tip>
+  Load modules at the top of a file when the module is required for every execution path. Load inside a function when the module is optional or side-dependent.
+</Tip>
+

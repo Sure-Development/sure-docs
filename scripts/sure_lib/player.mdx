@@ -1,0 +1,74 @@
+---
+title: "Player"
+description: "Client-side ESX player shortcuts"
+---
+
+# Player
+
+The `player` module is available on the client. It is automatically exposed as `sure.player` when `@sure_lib/init.lua` runs on the client.
+
+```lua
+local player = sure.player
+player.waitUntilLoaded()
+```
+
+## Shortcuts
+
+| Property | Returns |
+| --- | --- |
+| `player.data` | Current `ESX.GetPlayerData()` table. |
+| `player.loaded` | Current `ESX.IsPlayerLoaded()` result. |
+| `player.ped` | `PlayerPedId()`. |
+| `player.health` | `GetEntityHealth(PlayerPedId())`. |
+| `player.armor` | `GetEntityArmor(PlayerPedId())`. |
+| `player.coords` | `GetEntityCoords(PlayerPedId())`. |
+| `player.vehicle` | `cache.vehicle`. |
+| `player.serverId` | `cache.serverId`. |
+| `player.currentVehicleProperties` | `ESX.Game.GetVehicleProperties(cache.vehicle)` or `nil`. |
+| `player.waitUntilLoaded()` | Waits until ESX reports that the player is loaded. |
+
+## Inventory, accounts, and loadout lookup
+
+The module returns live ESX lists and adds string-key lookup helpers.
+
+<CodeGroup>
+
+```lua Inventory
+local bread = sure.player.inventory.bread
+
+if bread and bread.count > 0 then
+  print(('Bread count: %s'):format(bread.count))
+end
+```
+
+```lua Accounts
+local bank = sure.player.accounts.bank
+
+if bank then
+  print(('Bank balance: %s'):format(bank.money))
+end
+```
+
+```lua Loadout
+local pistol = sure.player.loadout.pistol
+local poolcue = sure.player.loadout.poolcue
+local samePoolcue = sure.player.loadout.weapon_poolcue
+```
+
+</CodeGroup>
+
+<Info>
+  Loadout lookup normalizes weapon names, so `pistol`, `weapon_pistol`, and `WEAPON_PISTOL` resolve to the same ESX loadout entry.
+</Info>
+
+## Startup pattern
+
+```lua
+CreateThread(function()
+  sure.player.waitUntilLoaded()
+
+  print(('Loaded as server id %s'):format(sure.player.serverId))
+  print(('Current health: %s'):format(sure.player.health))
+end)
+```
+

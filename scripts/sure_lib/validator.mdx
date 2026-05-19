@@ -1,0 +1,109 @@
+---
+title: "Validator"
+description: "Runtime schema validation for tables, primitives, callbacks, ranges, and enum-like values"
+---
+
+# Validator
+
+The `validator` module creates small schema objects that expose `parse(data)`. A successful parse returns `true`. A failed parse raises `Validation Error: ...`, so wrap user-controlled inputs with `pcall` when you want to handle errors without stopping execution.
+
+```lua
+local v = sure.getModule('validator')
+```
+
+## Basic schema
+
+<CodeGroup>
+
+```lua Create a schema
+local itemSchema = v.object({
+  name = v.string().required('Item name is required'),
+  amount = v.integer().min(1).max(100),
+  metadata = v.object({
+    label = v.string(),
+    temporary = v.boolean()
+  })
+})
+```
+
+```lua Parse data
+local ok, err = pcall(function()
+  itemSchema.parse({
+    name = 'bread',
+    amount = 2,
+    metadata = {
+      label = 'Bread',
+      temporary = false
+    }
+  })
+end)
+
+if not ok then
+  print(err)
+end
+```
+
+</CodeGroup>
+
+## Rules
+
+<ParamField path="required(message?)" type="function">
+  Marks a value as required. When `message` is provided, that message overrides the default missing-field error.
+</ParamField>
+
+<ParamField path="message(message)" type="function">
+  Sets a custom error message for the rule. The message is used when type or custom checks fail.
+</ParamField>
+
+<ParamField path="min(value)" type="function">
+  Requires a numeric value to be greater than or equal to `value`.
+</ParamField>
+
+<ParamField path="max(value)" type="function">
+  Requires a numeric value to be less than or equal to `value`.
+</ParamField>
+
+<ParamField path="between(min, max)" type="function">
+  Applies both `min(min)` and `max(max)`.
+</ParamField>
+
+<ParamField path="oneOf(values)" type="function">
+  Requires the parsed value to equal one entry in the given array.
+</ParamField>
+
+## Types
+
+| Builder | Accepts |
+| --- | --- |
+| `v.object(fields)` | A Lua table with named fields. |
+| `v.array(itemRule)` | A Lua array table where every item passes `itemRule`. |
+| `v.string()` | Lua `string`. |
+| `v.number()` | Lua `number`. |
+| `v.integer()` | Lua `number` with no fractional part. |
+| `v.boolean()` | Lua `boolean`, including `false`. |
+| `v.callback()` | Lua `function`. |
+
+## Nested example
+
+```lua
+local rewardSchema = v.object({
+  account = v.string().oneOf({ 'money', 'bank', 'black_money' }).required(),
+  items = v.array(v.object({
+    name = v.string().required(),
+    amount = v.integer().min(1)
+  }))
+})
+
+rewardSchema.parse({
+  account = 'bank',
+  items = {
+    { name = 'bread', amount = 2 },
+    { name = 'water', amount = 1 }
+  }
+})
+```
+
+<Warning>
+  `parse` raises errors by design. Use `pcall` when validating network input, command arguments, or config edited by other people.
+</Warning>
+

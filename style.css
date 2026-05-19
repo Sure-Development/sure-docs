@@ -1,24 +1,16 @@
-@import url('https://fonts.googleapis.com/css2?family=Anuphan:wght@100..700&family=Fira+Code:wght@300..700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&display=swap');
 
 :root {
-    --font-mono: 'Fira Code' !important;
-    --font-family-body-custom: 'Anuphan' !important;
-    --font-family-headings-custom: 'Anuphan' !important;
+  --font-family-body-custom: 'Fira Code', monospace !important;
+  --font-family-headings-custom: 'Fira Code', monospace !important;
+  --font-mono: 'Fira Code', monospace !important;
 }
 
-.badge {
-    display: inline-block;
-    font-size: 12px;
-    font-family: 'Fira Code' !important;
-    padding: 1px 5px;
-    border-radius: 4px;
+html,
+body {
+  background: #000000;
 }
 
-.badge-success {
-    background: rgba(0 255 98 / 0.3);
-    color: rgb(2, 10, 5);
-}
-
-.badge-neutral {
-    background: rgba(0 0 0 / .075);
+a {
+  text-underline-offset: 0.18em;
 }

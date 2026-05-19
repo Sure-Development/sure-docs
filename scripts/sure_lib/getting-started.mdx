@@ -1,74 +1,109 @@
 ---
 title: "Getting Started"
-description: "sure_lib คือทรัพยากรที่จะเข้ามาช่วยในการเขียนทรัพยากรของคุณให้เข้าใจและดูง่ายขึ้นด้วยหลักการ Modern-First lua with useful utilities"
+description: "Install sure_lib and load your first module"
 ---
 
-## Information - ข้อมูลเบื้องต้น
+# Getting Started
 
-- **เวอร์ชั่นปัจจุบัน** `1.2.0`
+<Badge icon="package" color="white" size="sm">sure_lib 2.0.0</Badge>
 
-## Requirements - ความต้องการขั้นพื้นฐาน
+This guide installs sure_lib into a consuming FiveM resource and loads a first module through the shared loader.
 
-- **FXServer** (ต้องรองรับ Onesync)
-- **es_extended**
-- **ox_lib**
+## Requirements
 
-## VSCode Extensions - ส่วนเสริมโปรแกรม
+<Columns cols={2}>
+  <Card title="Runtime" icon="server">
+    FiveM with `fx_version 'cerulean'`, `game 'gta5'`, and Lua 5.4 enabled.
+  </Card>
+  <Card title="Dependencies" icon="package-check">
+    `ox_lib` and `es_extended` must start before `sure_lib`.
+  </Card>
+</Columns>
 
-- [Lua (Lua Language Server coded by Lua)](https://marketplace.visualstudio.com/items?itemName=sumneko.lua)
-- [CfxLua (FiveM/RedM) IntelliseSense](https://marketplace.visualstudio.com/items?itemName=overextended.cfxlua-vscode)
-- [ESX IntelliseSense (FiveM)](https://marketplace.visualstudio.com/items?itemName=ardelanyamanel.fivem-esx-intellisense)
+## Install
 
-## Installation - ติดตั้ง
+<Steps>
+  <Step title="Place the resource">
+    Put the `sure_lib` folder in your server resources directory and make sure the folder name is exactly `sure_lib`.
+  </Step>
+  <Step title="Start dependencies first">
+    Start `ox_lib`, `es_extended`, and then `sure_lib` before resources that consume it.
+  </Step>
+  <Step title="Import the loader">
+    Add the shared loader to each consuming resource.
+  </Step>
+</Steps>
 
-[Download](https://github.com/Sure-Development/sure_lib)
+```lua fxmanifest.lua
+fx_version 'cerulean'
+game 'gta5'
+lua54 'yes'
 
-ให้คุณไปที่ไฟล์ `fxmanifest.lua` ของโฟลเดอร์ **Project** ที่คุณต้องการใช้งาน `sure_lib` และเพิ่ม
+shared_script '@sure_lib/init.lua'
 
-```lua
-shared_scripts {
-    '@ox_lib/init.lua',
-    '@es_extended/imports.lua',
-    '@sure_lib/imports/shared.lua'
+client_script 'client.lua'
+server_script 'server.lua'
+
+dependencies {
+  'ox_lib',
+  'es_extended',
+  'sure_lib'
 }
 ```
 
-หลังจากนั้นให้คุณไปที่ไฟล์ฝั่ง Server หรือ Client ของคุณและเริ่มต้นใช้งานทรัพยากร `sure_lib`
+<Warning>
+  Version `2.0.0` uses `@sure_lib/init.lua` and `sure.getModule(...)`. Keep consuming resources on this loader shape so examples and module resolution stay consistent.
+</Warning>
 
-<CodeGroup>
-```lua client-or-server/your-client-file.lua
-local v = GetModule('Validator')
+## Load a module
 
-local objectTesting = v.Object({
-  firstname = v.String().Required(),
-  lastname = v.String().Required()
-})
+<Tabs>
+  <Tab title="Shared">
+    ```lua shared.lua
+    local validator = sure.getModule('validator')
 
-local success, msg = pcall(function()
-  objectTesting.Parse({
-    firstname = 'Sure',
-    lastname = 'Lib'
-  })
-end)
+    local schema = validator.object({
+      name = validator.string().required(),
+      amount = validator.integer().min(1)
+    })
 
-print(success, msg)
-```
-</CodeGroup>
+    schema.parse({
+      name = 'bread',
+      amount = 2
+    })
+    ```
+  </Tab>
+  <Tab title="Client">
+    ```lua client.lua
+    local player = sure.player
 
-โดยการทำงานของเราจะเป็นรูปแบบการใช้งานผ่าน Module ซึ่งคุณสามารถที่จะเลือก Module ที่จะใช้งานตามความจำเป็นได้เองโดยปัจจุบันมี Module ทั้งหมดดังนี้
+    player.waitUntilLoaded()
 
-- Cooldown (Module สำหรับการนับเวลาเพื่อให้เวลาทุกคนภายในเซิฟเวอร์สอดคล้องกัน)
-- Schema Validation (Module สำหรับการตรวจสอบข้อมูลว่าเป็นไปตาม Schema หรือไม่)
-- ESX-Modern Utility Functions (Module สำหรับการเรียกใช้ฟังก์ชั่นของ ESX โดยง่าย)
-- Track - Reactive System (RippleJS-like) (Module สำหรับการ Track ข้อมูลตัวแปรต่าง ๆ และสามารถ Trigger Effect เมื่อมีการเปลี่ยนแปลงค่าได้)
+    print(player.serverId, player.health, player.coords)
+    print(player.inventory.bread and player.inventory.bread.count or 0)
+    ```
+  </Tab>
+  <Tab title="Server">
+    ```lua server.lua
+    local esx = sure.getModule('esx')
 
-<a href="//www.dmca.com/Protection/Status.aspx?ID=ad2f854d-b51f-4d1c-ad1e-100539e77173" title="DMCA.com Protection Status" class="dmca-badge" />
+    RegisterCommand('givebread', function(source)
+      esx.giveItem(source, 'bread', 1)
+    end, false)
+    ```
+  </Tab>
+</Tabs>
 
-<img
-  src="images/dmca-badge-w100-5x1-01.png"
-  alt=""
-  title=""
-  style={{ width:"15%" }}
-/>
+## Common setup checks
 
-<script src="https://images.dmca.com/Badges/DMCABadgeHelper.min.js" />
+<AccordionGroup>
+  <Accordion title="sure.getModule returns nil">
+    Confirm the module name is valid and that you are requesting it from a supported runtime. For example, `player` only exists on the client and `esx` only exists on the server.
+  </Accordion>
+  <Accordion title="ESX data is empty on client">
+    Call `sure.player.waitUntilLoaded()` before reading player data during resource startup.
+  </Accordion>
+  <Accordion title="Cooldown state does not sync">
+    Define the cooldown on the server first, then read or start that key from the client.
+  </Accordion>
+</AccordionGroup>

@@ -1,0 +1,104 @@
+---
+title: "ESX"
+description: "Server-side helpers for item and account transactions"
+---
+
+# ESX
+
+The `esx` module exists on the server only. It wraps common ESX item and account operations and returns `false` when the player source or payload is invalid.
+
+```lua
+local esx = sure.getModule('esx')
+```
+
+## Give and remove items
+
+<CodeGroup>
+
+```lua Single item
+local ok = esx.giveItem(source, 'bread', 2)
+
+if not ok then
+  print(('Could not give item to source %s'):format(source))
+end
+```
+
+```lua Multiple items
+esx.giveItems(source, {
+  { itemName = 'bread', amount = 2 },
+  { itemName = 'water', amount = 1 }
+})
+```
+
+```lua Remove items
+esx.removeItems(source, {
+  { itemName = 'bread', amount = 1 }
+})
+```
+
+</CodeGroup>
+
+## Add and remove account money
+
+```lua
+esx.addMoney(source, 'bank', 500)
+esx.removeMoney(source, 'money', 100)
+
+esx.addMoneyEntries(source, {
+  { accountName = 'bank', amount = 500 },
+  { accountName = 'money', amount = 100 }
+})
+```
+
+## Transactions
+
+`transactions(playerSource, entries)` is the lower-level primitive used by the helper methods. Each transaction is `{ action, argsList }`.
+
+| Action | ESX method |
+| --- | --- |
+| `1` | `xPlayer.addInventoryItem` |
+| `-1` | `xPlayer.removeInventoryItem` |
+| `2` | `xPlayer.addAccountMoney` |
+| `-2` | `xPlayer.removeAccountMoney` |
+
+```lua
+esx.transactions(source, {
+  { 1, { { 'bread', 2 }, { 'water', 1 } } },
+  { 2, { { 'bank', 500 } } }
+})
+```
+
+<Info>
+  The module validates payload shape before applying transactions. It returns `false` for malformed entries, missing players, or unknown transaction actions.
+</Info>
+
+## API
+
+<ParamField path="giveItem(playerSource, itemName, amount)" type="function" required>
+  Gives one inventory item to a player.
+</ParamField>
+
+<ParamField path="giveItems(playerSource, items)" type="function">
+  Gives multiple inventory items. Each entry must include `itemName` and numeric `amount`.
+</ParamField>
+
+<ParamField path="removeItem(playerSource, itemName, amount)" type="function" required>
+  Removes one inventory item from a player.
+</ParamField>
+
+<ParamField path="removeItems(playerSource, items)" type="function">
+  Removes multiple inventory items.
+</ParamField>
+
+<ParamField path="addMoney(playerSource, accountName, amount)" type="function" required>
+  Adds money to one ESX account.
+</ParamField>
+
+<ParamField path="removeMoney(playerSource, accountName, amount)" type="function" required>
+  Removes money from one ESX account.
+</ParamField>
+
+<ResponseField name="ok" type="boolean">
+  All ESX helper methods return `true` when the operation is accepted and `false` when validation or player lookup fails.
+</ResponseField>
+

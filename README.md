@@ -1,87 +1,50 @@
-# 999s Documentation
+# sure_lib Documentation
 
-A modern documentation website for 999s scripting resources, built with Mintlify.
+Mintlify documentation for [Sure-Development/sure_lib](https://github.com/Sure-Development/sure_lib).
 
-![Hero](images/hero.png)
+## Scope
 
-## Overview
+This documentation site covers `sure_lib` only. Legacy product documentation has been removed from navigation and content.
 
-999s Documentation is a comprehensive guide for scripting resources that help developers write better, more maintainable code. The documentation focuses on providing clear, easy-to-understand guides for various scripting tools and utilities, with a particular emphasis on the 999s Bridge framework.
+## Local development
 
-## Features
+Install the current Mintlify CLI package:
 
-- 📚 Modern documentation with a clean, intuitive interface
-- 🎨 Custom theme with beautiful color scheme
-- 🔧 Comprehensive API references
-- 📱 Responsive design for all devices
-- 🌐 Multi-language support (English and Thai)
-
-## Project Structure
-
-```
-docs.json           # Mintlify configuration
-favicon.png         # Site favicon
-index.mdx          # Home page
-style.css          # Custom styles
-images/            # Image assets
-logo/              # Logo assets
-scripts/           # Documentation content
-└── 999s-bridge/   # Bridge framework documentation
-    ├── getting-started.mdx
-    ├── schema-manager.mdx
-    ├── event-manager.mdx
-    ├── debug.mdx
-    ├── state.mdx
-    └── array.mdx
-```
-
-## Documentation Content
-
-The documentation covers several key areas:
-
-- **Getting Started Guide**: Basic setup and requirements
-- **999s Bridge Framework**:
-  - Schema Management
-  - Event System
-  - Debug Tools
-  - State Management
-  - Array Utilities
-
-## Development
-
-This documentation site is built using [Mintlify](https://mintlify.com/), a modern documentation platform.
-
-### Requirements
-
-- Node.js
-- Mintlify CLI
-
-### Local Development
-
-1. Install Mintlify CLI:
 ```bash
-npm install -g mintlify
+npm i -g mint
 ```
 
-2. Start the development server:
+Preview locally:
+
 ```bash
-mintlify dev
+mint dev
 ```
 
-3. Preview the documentation at `http://localhost:3000`
+Validate before publishing:
 
-## Support
+```bash
+mint validate
+```
 
-For support inquiries, please contact: [fx.frame009@gmail.com](mailto:fx.frame009@gmail.com)
+## Structure
 
-## Links
+```text
+docs.json
+index.mdx
+scripts/
+  sure_lib/
+    overview.mdx
+    getting-started.mdx
+    module-loader.mdx
+    validator.mdx
+    listener.mdx
+    track.mdx
+    player.mdx
+    cooldown.mdx
+    esx.mdx
+    api-reference.mdx
+```
 
-- [Documentation](https://999s.mintlify.app/)
-- [Portfolio](https://stateless-prt.vercel.app)
-- [GitHub](https://github.com/mysbryce)
+## Deployment
 
-## License
-
-All my resources (non open-source) are protected by DMCA. All rights reserved.
-
-![DMCA Protection Status](images/dmca-badge-w100-5x1-01.png)
+Mintlify deploys from the connected GitHub repository after changes are pushed to the configured deployment branch.
