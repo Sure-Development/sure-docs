@@ -1,0 +1,70 @@
+---
+title: "MotionNode"
+description: "Framer Motion-backed LUI node for animated elements and action buttons"
+---
+
+# MotionNode
+
+`MotionNode` is the renderer component behind `ui.motion`, `ui.motionDiv`, `ui.motionRow`, `ui.motionStack`, `ui.motionList`, `ui.motionListItem`, `ui.motionSection`, `ui.motionButton`, and `ui.motionText`.
+
+```lua
+ui.motionDiv({
+  initial = {
+    opacity = 0,
+    y = 8
+  },
+  animate = {
+    opacity = 1,
+    y = 0
+  },
+  exit = {
+    opacity = 0,
+    y = -8
+  },
+  transition = {
+    duration = 0.2,
+    ease = 'easeOut'
+  }
+}, function()
+  ui.text('Ready')
+end)
+```
+
+## APIs
+
+| Helper | Default element |
+| --- | --- |
+| `ui.motion(props?, children?)` | `div` |
+| `ui.motionDiv(props?, children?)` | `div` |
+| `ui.motionRow(props?, children?)` | `div` with row-like base class. |
+| `ui.motionStack(props?, children?)` | `div` with stack-like base class. |
+| `ui.motionList(props?, children?)` | `ul` |
+| `ui.motionListItem(props?, children?)` | `li` |
+| `ui.motionItem(props?, children?)` | Alias for `motionListItem`. |
+| `ui.motionSection(props?, children?)` | `section` |
+| `ui.motionButton(label, onPress, props?)` | `button` |
+| `ui.motionText(value, props?)` | `p` |
+
+Declarative helpers are available on `lui` with the same names.
+
+## Motion props
+
+MotionNode forwards these Framer Motion props when present:
+
+`animate`, `custom`, `drag`, `dragConstraints`, `dragElastic`, `dragMomentum`, `exit`, `initial`, `layout`, `layoutDependency`, `layoutId`, `transition`, `variants`, `whileDrag`, `whileFocus`, `whileHover`, `whileInView`, and `whileTap`.
+
+## Element and action props
+
+| Prop | Type | Description |
+| --- | --- | --- |
+| `as` | `'article' | 'button' | 'div' | 'li' | 'p' | 'section' | 'span' | 'ul'` | Motion element. Invalid values fall back to `div`. |
+| `classBase` | `string` | Base class used before `className`. |
+| `label` | `string | reactive getter` | Used by `motionButton` and `motionText` when there are no children. |
+| `onPress` | `function(payload)` | Used by `motionButton`; click events route through LUI event handling. |
+| `icon`, `iconComponent`, `startIcon`, `endIcon` | icon | Icon slots for button-like motion nodes. |
+| `iconPosition` | `'start' | 'end'` | Moves primary icon to the end. |
+
+<Info>
+  If a MotionNode has children, it renders the children. If it has no children, it renders label and icon slots.
+</Info>
+

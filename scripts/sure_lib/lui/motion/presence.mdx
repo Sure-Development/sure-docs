@@ -1,0 +1,59 @@
+---
+title: "Presence"
+description: "AnimatePresence wrapper for enter and exit transitions"
+---
+
+# Presence
+
+`Presence` wraps children in Framer Motion `AnimatePresence`. Use it around conditional or list-rendered motion nodes so exiting children can animate out.
+
+```lua
+ui.presence({
+  initial = false,
+  mode = 'popLayout'
+}, function()
+  ui.foreach(notices, function(notice, _, itemUi)
+    itemUi.motionDiv({
+      layout = true,
+      initial = { opacity = 0, x = 36 },
+      animate = { opacity = 1, x = 0 },
+      exit = { opacity = 0, x = 36 }
+    }, function()
+      itemUi.text(notice.message)
+    end)
+  end, {
+    keyBy = 'id'
+  })
+end)
+```
+
+## API
+
+<CodeGroup>
+
+```lua Builder
+ui.presence(props?, children?)
+ui.animatePresence(props?, children?)
+```
+
+```lua Declarative
+lui.presence(props?, children?)
+lui.animatePresence(props?, children?)
+```
+
+</CodeGroup>
+
+## Props
+
+| Prop | Type | Description |
+| --- | --- | --- |
+| `initial` | `boolean` | Passed to AnimatePresence. |
+| `mode` | `'sync' | 'wait' | 'popLayout'` | Presence mode. Invalid values are ignored. |
+| `custom` | `any` | Custom data passed to Framer Motion. |
+| `presenceAffectsLayout` | `boolean` | Passed through when boolean. |
+| `propagate` | `boolean` | Passed through when boolean. |
+
+<Tip>
+  Use stable keys for lists. `ui.foreach(..., { keyBy = 'id' })` is the easiest path for animated list items.
+</Tip>
+

@@ -1,0 +1,67 @@
+---
+title: "Button"
+description: "Clickable LUI action button with Lua event callbacks and icons"
+---
+
+# Button
+
+`Button` renders an action button and routes clicks back to Lua through the registered callback.
+
+```lua
+lui.page('actions', function(ui)
+  ui.button('Save', function(payload)
+    print('saved from LUI')
+  end, {
+    iconComponent = 'lucide:save',
+    variant = 'primary'
+  })
+end)
+```
+
+## API
+
+<CodeGroup>
+
+```lua Builder
+ui.button(label, onPress, props?)
+```
+
+```lua Declarative
+lui.button(label, onPress, props?)
+```
+
+</CodeGroup>
+
+## Props
+
+| Prop | Type | Description |
+| --- | --- | --- |
+| `label` | `string | reactive getter` | Button text. Passed as the first argument. |
+| `onPress` | `function(payload)` | Lua callback called when the button is clicked. |
+| `variant` | `'primary' | 'ghost'` | Visual style. Defaults to `primary`. |
+| `icon`, `iconComponent`, `startIcon`, `startIconComponent` | icon | Leading icon. |
+| `endIcon`, `endIconComponent` | icon | Trailing icon. |
+| `iconPosition` | `'start' | 'end'` | Moves the primary icon to the end when set to `end`. |
+| `labelClassName` | `string` | Extra class for the label span. |
+| `iconClassName`, `startIconClassName`, `endIconClassName` | `string` | Extra icon slot classes. |
+| `className`, `style` | mixed | Common LUI styling props. |
+
+## Icon formats
+
+```lua
+ui.button('Close', onClose, {
+  endIcon = '->'
+})
+
+ui.button('Save', onSave, {
+  icon = {
+    name = 'lucide:save',
+    width = 16
+  }
+})
+```
+
+<Info>
+  `motionButton` uses the MotionNode renderer but keeps the same `label`, `onPress`, and icon conventions.
+</Info>
+

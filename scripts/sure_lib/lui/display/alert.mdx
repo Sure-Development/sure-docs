@@ -1,0 +1,54 @@
+---
+title: "Alert"
+description: "Status message surface with title, description, icon, and children"
+---
+
+# Alert
+
+`Alert` renders a bordered status message. It can be a leaf component or a container with child nodes.
+
+```lua
+ui.alert({
+  title = 'Interactive State',
+  description = 'Change values here and the preview updates.',
+  iconComponent = 'lucide:info'
+})
+```
+
+```lua
+ui.alert({
+  title = 'Warning',
+  variant = 'destructive'
+}, function()
+  ui.text('This action cannot be undone.')
+end)
+```
+
+## API
+
+<CodeGroup>
+
+```lua Builder
+ui.alert(props, children?)
+```
+
+```lua Declarative
+lui.alert(props, children?)
+```
+
+</CodeGroup>
+
+## Props
+
+| Prop | Type | Description |
+| --- | --- | --- |
+| `title` | `string` | Optional heading. |
+| `description` | `string` | Optional description text. |
+| `variant` | `'default' | 'destructive'` | Destructive switches to red border/text styling. |
+| `icon`, `iconComponent` | icon | Optional leading icon. |
+| `innerClassName` | `string` | Inner wrapper class. |
+| `bodyClassName`, `contentClassName` | `string` | Body/content wrapper class. |
+| `titleClassName` | `string` | Title class. |
+| `descriptionClassName` | `string` | Description class. |
+| `className`, `style` | mixed | Common LUI styling props. |
+

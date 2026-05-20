@@ -1,0 +1,43 @@
+---
+title: "Badge"
+description: "Compact label with variants and optional icons"
+---
+
+# Badge
+
+`Badge` renders a compact status label. It supports text icons and Iconify icon specs.
+
+```lua
+ui.badge('Ready', {
+  iconComponent = 'lucide:check',
+  variant = 'secondary'
+})
+```
+
+## API
+
+<CodeGroup>
+
+```lua Builder
+ui.badge(label, props?)
+```
+
+```lua Declarative
+lui.badge(label, props?)
+```
+
+</CodeGroup>
+
+## Props
+
+| Prop | Type | Description |
+| --- | --- | --- |
+| `label` | `string | reactive getter` | Badge text. Passed as the first argument. |
+| `value` | `string` | Fallback label if `label` is missing. |
+| `variant` | `'default' | 'secondary' | 'outline' | 'destructive'` | Visual variant. |
+| `icon`, `iconComponent`, `startIcon`, `startIconComponent` | icon | Leading icon. |
+| `endIcon`, `endIconComponent` | icon | Trailing icon. |
+| `iconPosition` | `'start' | 'end'` | Moves the primary icon to the end when set to `end`. |
+| `labelClassName` | `string` | Label span class. |
+| `iconClassName`, `startIconClassName`, `endIconClassName` | `string` | Icon slot classes. |
+

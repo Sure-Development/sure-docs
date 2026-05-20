@@ -1,0 +1,58 @@
+---
+title: "Carousel"
+description: "Simple slide viewer for title, description, and optional image items"
+---
+
+# Carousel
+
+`Carousel` renders a slide viewer with previous and next controls when more than one item exists.
+
+```lua
+ui.carousel({
+  {
+    title = 'Lua first',
+    description = 'Build UI by describing nodes in Lua.'
+  },
+  {
+    title = 'Motion ready',
+    description = 'AnimatePresence powers enter and exit transitions.'
+  }
+})
+```
+
+## API
+
+<CodeGroup>
+
+```lua Builder
+ui.carousel(items, props?)
+```
+
+```lua Declarative
+lui.carousel(items, props?)
+```
+
+</CodeGroup>
+
+## Item shape
+
+| Field | Type | Description |
+| --- | --- | --- |
+| `title` or `label` | `string` | Slide title. Defaults to `Slide N`. |
+| `description` or `content` | `string` | Slide body. |
+| `image` | `string` | Optional image URL. |
+
+String items are accepted and become the slide title.
+
+## Props
+
+| Prop | Description |
+| --- | --- |
+| `viewportClassName`, `contentClassName` | Main slide area classes. |
+| `titleClassName` | Slide title class. |
+| `descriptionClassName` | Slide description class. |
+| `controlClassName` | Shared previous/next button class. |
+| `previousClassName` | Previous button class. |
+| `nextClassName` | Next button class. |
+| `className`, `style` | Common LUI styling props. |
+

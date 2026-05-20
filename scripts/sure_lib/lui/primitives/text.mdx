@@ -1,0 +1,46 @@
+---
+title: "Text"
+description: "Primitive paragraph text for LUI pages"
+---
+
+# Text
+
+`Text` is the simplest LUI primitive. It renders a paragraph node from `ui.text(value, props?)` or `lui.text(value, props?)`.
+
+```lua
+lui.page('copy', function(ui)
+  ui.text('Inventory synced')
+  ui.text('Waiting for server response', {
+    tone = 'muted'
+  })
+end)
+```
+
+## API
+
+<CodeGroup>
+
+```lua Builder
+ui.text(value, props?)
+```
+
+```lua Declarative
+lui.text(value, props?)
+```
+
+</CodeGroup>
+
+## Props
+
+| Prop | Type | Description |
+| --- | --- | --- |
+| `value` | `string | number | reactive getter` | Text content. Passed as the first argument in Lua helpers. |
+| `tone` | `'default' | 'muted'` | `muted` renders smaller muted text. Defaults to `default`. |
+| `className` | `string` | Appends runtime utility classes to the default text class. |
+| `style` | `table` | Inline style table forwarded to the renderer. |
+| `font`, `color`, `theme`, `vars` | mixed | Common LUI style props handled by the renderer. |
+
+<Tip>
+  Use `ui.typography` for headings, lead copy, code-style text, or semantic variants. Use `ui.text` for short paragraph text.
+</Tip>
+

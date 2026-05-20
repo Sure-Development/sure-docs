@@ -1,0 +1,64 @@
+---
+title: "Table"
+description: "Read-only data table with normalized columns and rows"
+---
+
+# Table
+
+`Table` renders read-only rows from a column list and row data.
+
+```lua
+ui.table({
+  { key = 'component', label = 'Component' },
+  { key = 'status', label = 'Status' },
+  { key = 'note', label = 'Note' }
+}, {
+  {
+    component = 'Controls',
+    status = 'interactive',
+    note = 'input, select, textarea, slider, button'
+  }
+}, {
+  caption = 'LUI component status'
+})
+```
+
+## API
+
+<CodeGroup>
+
+```lua Builder
+ui.table(columns, rows, props?)
+```
+
+```lua Declarative
+lui.table(columns, rows, props?)
+```
+
+</CodeGroup>
+
+## Data shape
+
+| Input | Shape |
+| --- | --- |
+| `columns` | String array or `{ key, label }[]`. Object columns also accept `value` as a key fallback. |
+| `rows` | Array of tables. Each column reads `row[column.key]`. |
+
+## Props
+
+| Prop | Description |
+| --- | --- |
+| `caption` | Optional caption rendered below the table. |
+| `tableClassName` | Table element class. |
+| `captionClassName` | Caption class. |
+| `headerClassName`, `theadClassName` | Header group class. |
+| `headerRowClassName` | Header row class. |
+| `headClassName`, `headerCellClassName`, `thClassName` | Header cell classes. |
+| `bodyClassName`, `tbodyClassName` | Body class. |
+| `rowClassName` | Body row class. |
+| `cellClassName`, `tdClassName` | Body cell classes. |
+
+<Info>
+  Row keys come from `row.id`, `row.key`, or the row index.
+</Info>
+

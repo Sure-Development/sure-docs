@@ -66,6 +66,73 @@
             ]
           },
           {
+            "group": "LUI Components",
+            "icon": "panels-top-left",
+            "pages": [
+              {
+                "group": "Primitives",
+                "icon": "type",
+                "pages": [
+                  "scripts/sure_lib/lui/primitives/text"
+                ]
+              },
+              {
+                "group": "Controls",
+                "icon": "sliders-horizontal",
+                "pages": [
+                  "scripts/sure_lib/lui/controls/button",
+                  "scripts/sure_lib/lui/controls/input",
+                  "scripts/sure_lib/lui/controls/select",
+                  "scripts/sure_lib/lui/controls/slider",
+                  "scripts/sure_lib/lui/controls/textarea"
+                ]
+              },
+              {
+                "group": "Display",
+                "icon": "badge-info",
+                "pages": [
+                  "scripts/sure_lib/lui/display/accordion",
+                  "scripts/sure_lib/lui/display/alert",
+                  "scripts/sure_lib/lui/display/badge",
+                  "scripts/sure_lib/lui/display/table",
+                  "scripts/sure_lib/lui/display/typography"
+                ]
+              },
+              {
+                "group": "Layout",
+                "icon": "layout-panel-top",
+                "pages": [
+                  "scripts/sure_lib/lui/layout/panel",
+                  "scripts/sure_lib/lui/layout/row",
+                  "scripts/sure_lib/lui/layout/stack"
+                ]
+              },
+              {
+                "group": "Motion",
+                "icon": "sparkles",
+                "pages": [
+                  "scripts/sure_lib/lui/motion/motion-node",
+                  "scripts/sure_lib/lui/motion/presence"
+                ]
+              },
+              {
+                "group": "Navigation",
+                "icon": "panel-top",
+                "pages": [
+                  "scripts/sure_lib/lui/navigation/carousel",
+                  "scripts/sure_lib/lui/navigation/tabs"
+                ]
+              },
+              {
+                "group": "Overlay",
+                "icon": "message-square",
+                "pages": [
+                  "scripts/sure_lib/lui/overlay/tooltip"
+                ]
+              }
+            ]
+          },
+          {
             "group": "Server Modules",
             "icon": "database",
             "pages": [

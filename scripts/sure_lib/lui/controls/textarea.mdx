@@ -1,0 +1,48 @@
+---
+title: "Textarea"
+description: "Multi-line text input with Lua onChange payloads"
+---
+
+# Textarea
+
+`Textarea` renders a multi-line text input and sends `{ value = string }` to Lua on change.
+
+```lua
+local message, setMessage = track.state('message', 'Lua-driven UI')
+
+lui.page('message', function(ui)
+  ui.textarea({
+    value = message,
+    placeholder = 'Write a message',
+    className = 'min-h-[96px]',
+    onChange = function(payload)
+      setMessage(payload.value)
+    end
+  })
+end)
+```
+
+## API
+
+<CodeGroup>
+
+```lua Builder
+ui.textarea(props)
+```
+
+```lua Declarative
+lui.textarea(props)
+```
+
+</CodeGroup>
+
+## Props
+
+| Prop | Type | Description |
+| --- | --- | --- |
+| `value` | `string | reactive getter` | Current text. |
+| `placeholder` | `string` | Placeholder text. |
+| `onChange` | `function(payload)` | Receives `{ value = string }`. |
+| `textareaClassName`, `inputClassName` | `string` | Textarea element classes. |
+| `className`, `style` | mixed | Common LUI styling props. |
+

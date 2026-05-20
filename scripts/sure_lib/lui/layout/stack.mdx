@@ -1,0 +1,43 @@
+---
+title: "Stack"
+description: "Vertical flex container with named gap sizes"
+---
+
+# Stack
+
+`Stack` renders a vertical flex container for ordered content.
+
+```lua
+ui.stack({
+  gap = 'lg',
+  className = 'w-[480px]'
+}, function()
+  ui.typography('Content', {
+    variant = 'h3'
+  })
+  ui.text('Stacked body')
+end)
+```
+
+## API
+
+<CodeGroup>
+
+```lua Builder
+ui.stack(props?, children?)
+```
+
+```lua Declarative
+lui.stack(props?, children?)
+```
+
+</CodeGroup>
+
+## Props
+
+| Prop | Type | Description |
+| --- | --- | --- |
+| `gap` | `'sm' | 'md' | 'lg'` | Vertical spacing. Defaults to `md`. |
+| `className` | `string` | Appends classes to the default stack class. |
+| `style`, `font`, `theme`, `vars` | mixed | Common LUI styling props. |
+

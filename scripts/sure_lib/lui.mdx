@@ -152,6 +152,29 @@ end)
 
 ## Components
 
+Component docs are split by the renderer source folders under `ui/lui/src/components`, with one page per public component.
+
+<CardGroup cols={2}>
+  <Card title="Primitives" icon="type" href="./lui/primitives/text.mdx">
+    Text rendering for short paragraph content.
+  </Card>
+  <Card title="Controls" icon="sliders-horizontal" href="./lui/controls/button.mdx">
+    Button, Input, Select, Slider, and Textarea.
+  </Card>
+  <Card title="Display" icon="badge-info" href="./lui/display/accordion.mdx">
+    Accordion, Alert, Badge, Table, and Typography.
+  </Card>
+  <Card title="Layout" icon="layout-panel-top" href="./lui/layout/panel.mdx">
+    Panel, Row, and Stack containers.
+  </Card>
+  <Card title="Motion" icon="sparkles" href="./lui/motion/motion-node.mdx">
+    MotionNode and Presence for animated UI.
+  </Card>
+  <Card title="Navigation and Overlay" icon="panel-top" href="./lui/navigation/carousel.mdx">
+    Carousel, Tabs, and Tooltip.
+  </Card>
+</CardGroup>
+
 <AccordionGroup>
   <Accordion title="Layout">
     `stack`, `row`, and `panel` create layout containers. Common props include `className`, `classBase`, `gap`, `align`, `width`, `font`, and `theme`.
@@ -193,4 +216,3 @@ Several composed components preserve part-specific class props, such as `trigger
 <Check>
   The bundled renderer includes controls, display components, motion helpers, runtime utility classes, and Iconify-powered Lucide icons, so consuming resources can describe UI from Lua without writing HTML.
 </Check>
-

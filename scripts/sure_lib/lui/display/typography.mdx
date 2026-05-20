@@ -1,0 +1,58 @@
+---
+title: "Typography"
+description: "Semantic text variants for headings, paragraphs, code, and muted copy"
+---
+
+# Typography
+
+`Typography` renders semantic text variants. It can render a direct value or wrap child nodes.
+
+```lua
+ui.typography('sure_lib Lua UI', {
+  variant = 'h1'
+})
+
+ui.typography('A runtime page rendered from Lua.', {
+  variant = 'lead'
+})
+```
+
+## API
+
+<CodeGroup>
+
+```lua Builder
+ui.typography(value?, props?, children?)
+```
+
+```lua Declarative
+lui.typography(value?, props?, children?)
+```
+
+</CodeGroup>
+
+## Variants
+
+| Variant | Rendered tag | Use |
+| --- | --- | --- |
+| `h1`, `h2`, `h3`, `h4` | Heading tags | Section headings. |
+| `p` | `p` | Paragraph text. |
+| `lead` | `p` | Lead paragraph. |
+| `muted` | `p` | Muted helper text. |
+| `large` | `div` | Large emphasized text. |
+| `small` | `small` | Small label text. |
+| `blockquote` | `blockquote` | Quoted or emphasized block. |
+| `code` | `code` | Inline code-like text. |
+
+## Props
+
+| Prop | Type | Description |
+| --- | --- | --- |
+| `value` | `string | reactive getter` | Text content. |
+| `variant` or `as` | `string` | Selects the variant. Defaults to `p`. |
+| `className`, `style` | mixed | Common LUI styling props. |
+
+<Tip>
+  If children are present, Typography renders children instead of `value`.
+</Tip>
+

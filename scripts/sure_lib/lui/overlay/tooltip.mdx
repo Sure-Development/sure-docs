@@ -1,0 +1,52 @@
+---
+title: "Tooltip"
+description: "Hover tooltip with text trigger or custom children"
+---
+
+# Tooltip
+
+`Tooltip` renders hover text above a trigger. If the component has children, those children become the trigger; otherwise it renders the `trigger` prop.
+
+```lua
+ui.tooltip({
+  trigger = 'Hover hint',
+  content = 'This tooltip is rendered by LUI without Radix.'
+})
+```
+
+```lua
+ui.tooltip({
+  content = 'Save changes'
+}, function()
+  ui.button('Save', onSave)
+end)
+```
+
+## API
+
+<CodeGroup>
+
+```lua Builder
+ui.tooltip(props, children?)
+```
+
+```lua Declarative
+lui.tooltip(props, children?)
+```
+
+</CodeGroup>
+
+## Props
+
+| Prop | Type | Description |
+| --- | --- | --- |
+| `content` or `label` | `string` | Tooltip body text. |
+| `trigger` | `string` | Fallback trigger text when no children are passed. |
+| `triggerClassName` | `string` | Trigger span class. |
+| `tooltipClassName`, `contentClassName` | `string` | Tooltip bubble class. |
+| `className`, `style` | mixed | Common LUI styling props. |
+
+<Info>
+  Tooltip visibility is CSS hover-based through the wrapper group class.
+</Info>
+

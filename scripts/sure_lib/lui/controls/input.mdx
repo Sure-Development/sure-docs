@@ -1,0 +1,59 @@
+---
+title: "Input"
+description: "Single-line text input with Lua onChange payloads"
+---
+
+# Input
+
+`Input` renders a single-line text input. It sends `{ value = string }` to Lua whenever the value changes.
+
+```lua
+local search, setSearch = track.state('search', '')
+
+lui.page('search', function(ui)
+  ui.input({
+    placeholder = 'Search item',
+    prefixIconComponent = 'lucide:search',
+    suffix = 'esc',
+    value = search,
+    onChange = function(payload)
+      setSearch(payload.value)
+    end
+  })
+end)
+```
+
+## API
+
+<CodeGroup>
+
+```lua Builder
+ui.input(props)
+```
+
+```lua Declarative
+lui.input(props)
+```
+
+</CodeGroup>
+
+## Props
+
+| Prop | Type | Description |
+| --- | --- | --- |
+| `value` | `string | reactive getter` | Current input value. |
+| `placeholder` | `string` | Placeholder text. |
+| `onChange` | `function(payload)` | Receives `{ value = string }`. |
+| `prefix`, `prefixIcon`, `prefixIconComponent` | icon | Leading content or Iconify icon. |
+| `suffix`, `suffixIcon`, `suffixIconComponent` | icon | Trailing content or Iconify icon. |
+| `startIcon`, `startIconComponent`, `icon`, `iconComponent` | icon | Alternative leading icon props. |
+| `endIcon`, `endIconComponent` | icon | Alternative trailing icon props. |
+| `wrapperClassName` | `string` | Class for the outer label wrapper. |
+| `inputClassName` | `string` | Class for the input element. |
+| `prefixClassName`, `suffixClassName`, `iconClassName` | `string` | Classes for icon slots. |
+| `className`, `style` | mixed | Common LUI styling props. |
+
+<Warning>
+  The renderer uses `defaultValue`, so keep reactive state in Lua as the source of truth and update it from `onChange`.
+</Warning>
+

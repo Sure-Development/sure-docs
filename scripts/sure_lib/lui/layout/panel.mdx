@@ -1,0 +1,43 @@
+---
+title: "Panel"
+description: "Framed container for grouped LUI content"
+---
+
+# Panel
+
+`Panel` renders a framed container with border, background, padding, and shadow.
+
+```lua
+ui.panel({
+  width = 'lg',
+  className = 'm-0 w-full max-w-[980px]'
+}, function()
+  ui.typography('Controls', {
+    variant = 'h3'
+  })
+  ui.text('Panel body')
+end)
+```
+
+## API
+
+<CodeGroup>
+
+```lua Builder
+ui.panel(props?, children?)
+```
+
+```lua Declarative
+lui.panel(props?, children?)
+```
+
+</CodeGroup>
+
+## Props
+
+| Prop | Type | Description |
+| --- | --- | --- |
+| `width` | `'sm' | 'md' | 'lg'` | Max width. Defaults to `md`. |
+| `className` | `string` | Appends to the default panel class. |
+| `style`, `font`, `theme`, `vars` | mixed | Common LUI styling props. |
+

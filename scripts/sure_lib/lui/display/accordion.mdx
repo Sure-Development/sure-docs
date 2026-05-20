@@ -1,0 +1,64 @@
+---
+title: "Accordion"
+description: "Expandable display sections with single or multiple open items"
+---
+
+# Accordion
+
+`Accordion` renders expandable sections from an item array.
+
+```lua
+ui.accordion({
+  {
+    title = 'How is this page made?',
+    content = 'Use sure.getModule("lui") and build pages with Lua nodes.',
+    value = 'how'
+  },
+  {
+    title = 'Where is the HTML?',
+    content = 'The renderer is bundled in sure_lib.',
+    value = 'html'
+  }
+}, {
+  closedIconComponent = 'lucide:plus',
+  openIconComponent = 'lucide:minus'
+})
+```
+
+## API
+
+<CodeGroup>
+
+```lua Builder
+ui.accordion(items, props?)
+```
+
+```lua Declarative
+lui.accordion(items, props?)
+```
+
+</CodeGroup>
+
+## Item shape
+
+| Field | Type | Description |
+| --- | --- | --- |
+| `value` or `id` | `string` | Stable item id. Defaults to `item-N`. |
+| `title` or `label` | `string` | Trigger text. Defaults to `value`. |
+| `content` or `description` | `string` | Expanded body text. |
+| `disabled` | `boolean` | Disables the trigger when `true`. |
+
+## Props
+
+| Prop | Type | Description |
+| --- | --- | --- |
+| `type` | `'single' | 'multiple'` | Multiple mode keeps more than one item open. |
+| `collapsible` | `boolean` | Defaults to `true`. Set `false` to keep the active item open. |
+| `defaultValue` | `string` | Initial open item. Defaults to the first item value. |
+| `openIcon`, `openIconComponent`, `activeIcon`, `activeIconComponent` | icon | Open icon. |
+| `closedIcon`, `closedIconComponent`, `icon`, `iconComponent` | icon | Closed icon. |
+| `itemClassName` | `string` | Item wrapper class. |
+| `triggerClassName`, `activeTriggerClassName`, `openTriggerClassName` | `string` | Trigger classes. |
+| `titleClassName` | `string` | Title span class. |
+| `contentClassName` | `string` | Expanded content class. |
+

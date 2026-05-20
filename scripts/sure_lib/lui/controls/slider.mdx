@@ -1,0 +1,64 @@
+---
+title: "Slider"
+description: "Range slider with numeric Lua onChange payloads"
+---
+
+# Slider
+
+`Slider` renders a range input with custom track, range, and thumb surfaces. It sends `{ value = number }` to Lua on change.
+
+```lua
+local amount, setAmount = track.state('amount', 3)
+
+lui.page('amount', function(ui)
+  ui.slider({
+    min = 0,
+    max = 10,
+    step = 1,
+    value = amount,
+    rangeIconComponent = 'lucide:minus',
+    thumbIcon = {
+      name = 'lucide:circle',
+      width = 10
+    },
+    onChange = function(payload)
+      setAmount(payload.value)
+    end
+  })
+end)
+```
+
+## API
+
+<CodeGroup>
+
+```lua Builder
+ui.slider(props)
+```
+
+```lua Declarative
+lui.slider(props)
+```
+
+</CodeGroup>
+
+## Props
+
+| Prop | Type | Description |
+| --- | --- | --- |
+| `value` | `number | reactive getter` | Current value. Defaults to `min`. |
+| `min` | `number` | Minimum value. Defaults to `0`. |
+| `max` | `number` | Maximum value. Defaults to `100`. |
+| `step` | `number` | Step size. Defaults to `1`. |
+| `onChange` | `function(payload)` | Receives `{ value = number }`. |
+| `thumbIcon`, `thumbIconComponent`, `icon`, `iconComponent` | icon | Thumb icon. |
+| `rangeIcon`, `rangeIconComponent`, `fillIcon`, `fillIconComponent` | icon | Icon rendered inside the filled range. |
+| `trackClassName` | `string` | Track class. |
+| `rangeClassName`, `fillClassName` | `string` | Filled range class. |
+| `thumbClassName` | `string` | Thumb class. |
+| `inputClassName` | `string` | Invisible range input class. |
+
+<Info>
+  If `max` equals `min`, progress is treated as `0` to avoid invalid division.
+</Info>
+

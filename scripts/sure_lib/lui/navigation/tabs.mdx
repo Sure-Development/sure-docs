@@ -1,0 +1,63 @@
+---
+title: "Tabs"
+description: "Tabbed content navigation with active/inactive part classes"
+---
+
+# Tabs
+
+`Tabs` renders a tab list and text content panels.
+
+```lua
+ui.tabs({
+  {
+    label = 'Overview',
+    value = 'overview',
+    content = 'Tabs, table, carousel, accordion, and controls all come from Lua nodes.'
+  },
+  {
+    label = 'Styling',
+    value = 'styling',
+    content = 'Runtime utility styles and part classes can customize the surface.'
+  }
+}, {
+  defaultValue = 'overview',
+  activeTriggerClassName = 'bg-[#111111] text-white'
+})
+```
+
+## API
+
+<CodeGroup>
+
+```lua Builder
+ui.tabs(items, props?)
+```
+
+```lua Declarative
+lui.tabs(items, props?)
+```
+
+</CodeGroup>
+
+## Item shape
+
+| Field | Type | Description |
+| --- | --- | --- |
+| `value` or `id` | `string` | Stable tab id. Defaults to `tab-N`. |
+| `label` or `title` | `string` | Trigger label. Defaults to `value`. |
+| `content` or `description` | `string` | Content panel text. |
+
+## Props
+
+| Prop | Description |
+| --- | --- |
+| `defaultValue` | Initial active tab. Defaults to the first tab value. |
+| `listClassName` | Tab list wrapper class. |
+| `triggerClassName` | Shared trigger class. |
+| `activeTriggerClassName` | Active trigger class. |
+| `inactiveTriggerClassName` | Inactive trigger class. |
+| `labelClassName` | Shared label class. |
+| `activeLabelClassName` | Active label class. |
+| `inactiveLabelClassName` | Inactive label class. |
+| `contentClassName` | Content panel class. |
+

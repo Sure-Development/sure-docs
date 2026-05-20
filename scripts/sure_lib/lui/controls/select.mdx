@@ -1,0 +1,62 @@
+---
+title: "Select"
+description: "Dropdown select with string or object options"
+---
+
+# Select
+
+`Select` renders a dropdown control and sends `{ value = selectedValue }` to Lua when the user chooses an option.
+
+```lua
+local tone, setTone = track.state('tone', 'success')
+
+lui.page('filters', function(ui)
+  ui.select({
+    value = tone,
+    options = {
+      { label = 'Success', value = 'success' },
+      { label = 'Warning', value = 'warning' },
+      { label = 'Error', value = 'error' }
+    },
+    onChange = function(payload)
+      setTone(payload.value)
+    end
+  })
+end)
+```
+
+## API
+
+<CodeGroup>
+
+```lua Builder
+ui.select(props)
+```
+
+```lua Declarative
+lui.select(props)
+```
+
+</CodeGroup>
+
+## Props
+
+| Prop | Type | Description |
+| --- | --- | --- |
+| `value` | `string | reactive getter` | Selected value. |
+| `options` | `string[] | { label, value }[] | reactive getter` | Options. Strings become both label and value. |
+| `onChange` | `function(payload)` | Receives `{ value = string }`. |
+| `icon`, `iconComponent` | icon | Default open/closed icon. |
+| `closedIcon`, `closedIconComponent` | icon | Icon while closed. |
+| `openIcon`, `openIconComponent`, `activeIcon`, `activeIconComponent` | icon | Icon while open. |
+| `triggerClassName` | `string` | Trigger button class. |
+| `valueClassName`, `labelClassName` | `string` | Selected value text class. |
+| `menuClassName`, `contentClassName` | `string` | Dropdown menu class. |
+| `optionClassName` | `string` | Every option row class. |
+| `optionActiveClassName`, `optionSelectedClassName` | `string` | Active option row classes. |
+| `optionLabelClassName`, `optionActiveLabelClassName` | `string` | Option label classes. |
+
+<Tip>
+  `Select` keeps a local selected value for immediate UI feedback, then syncs back to reactive Lua state through `onChange`.
+</Tip>
+

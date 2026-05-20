@@ -43,6 +43,26 @@ scripts/
     player.mdx
     spawn.mdx
     lui.mdx
+    lui/
+      primitives/text.mdx
+      controls/button.mdx
+      controls/input.mdx
+      controls/select.mdx
+      controls/slider.mdx
+      controls/textarea.mdx
+      display/accordion.mdx
+      display/alert.mdx
+      display/badge.mdx
+      display/table.mdx
+      display/typography.mdx
+      layout/panel.mdx
+      layout/row.mdx
+      layout/stack.mdx
+      motion/motion-node.mdx
+      motion/presence.mdx
+      navigation/carousel.mdx
+      navigation/tabs.mdx
+      overlay/tooltip.mdx
     cooldown.mdx
     db.mdx
     esx.mdx
