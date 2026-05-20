@@ -32,12 +32,11 @@ lui.badge(label, props?)
 
 | Prop | Type | Description |
 | --- | --- | --- |
-| `label` | `string | reactive getter` | Badge text. Passed as the first argument. |
+| `label` | `string \| reactive getter` | Badge text. Passed as the first argument. |
 | `value` | `string` | Fallback label if `label` is missing. |
-| `variant` | `'default' | 'secondary' | 'outline' | 'destructive'` | Visual variant. |
+| `variant` | `'default' \| 'secondary' \| 'outline' \| 'destructive'` | Visual variant. |
 | `icon`, `iconComponent`, `startIcon`, `startIconComponent` | icon | Leading icon. |
 | `endIcon`, `endIconComponent` | icon | Trailing icon. |
-| `iconPosition` | `'start' | 'end'` | Moves the primary icon to the end when set to `end`. |
+| `iconPosition` | `'start' \| 'end'` | Moves the primary icon to the end when set to `end`. |
 | `labelClassName` | `string` | Label span class. |
 | `iconClassName`, `startIconClassName`, `endIconClassName` | `string` | Icon slot classes. |
-

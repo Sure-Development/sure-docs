@@ -5,7 +5,7 @@ description: "Single-line text input with Lua onChange payloads"
 
 # Input
 
-`Input` renders a single-line text input. It sends `{ value = string }` to Lua whenever the value changes.
+`Input` renders a single-line text input. It sends a payload with `value = string` to Lua whenever the value changes.
 
 ```lua
 local search, setSearch = track.state('search', '')
@@ -41,9 +41,9 @@ lui.input(props)
 
 | Prop | Type | Description |
 | --- | --- | --- |
-| `value` | `string | reactive getter` | Current input value. |
+| `value` | `string \| reactive getter` | Current input value. |
 | `placeholder` | `string` | Placeholder text. |
-| `onChange` | `function(payload)` | Receives `{ value = string }`. |
+| `onChange` | `function(payload)` | Receives a payload with `value = string`. |
 | `prefix`, `prefixIcon`, `prefixIconComponent` | icon | Leading content or Iconify icon. |
 | `suffix`, `suffixIcon`, `suffixIconComponent` | icon | Trailing content or Iconify icon. |
 | `startIcon`, `startIconComponent`, `icon`, `iconComponent` | icon | Alternative leading icon props. |
@@ -56,4 +56,3 @@ lui.input(props)
 <Warning>
   The renderer uses `defaultValue`, so keep reactive state in Lua as the source of truth and update it from `onChange`.
 </Warning>
-

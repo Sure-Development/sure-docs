@@ -48,7 +48,7 @@ lui.animatePresence(props?, children?)
 | Prop | Type | Description |
 | --- | --- | --- |
 | `initial` | `boolean` | Passed to AnimatePresence. |
-| `mode` | `'sync' | 'wait' | 'popLayout'` | Presence mode. Invalid values are ignored. |
+| `mode` | `'sync' \| 'wait' \| 'popLayout'` | Presence mode. Invalid values are ignored. |
 | `custom` | `any` | Custom data passed to Framer Motion. |
 | `presenceAffectsLayout` | `boolean` | Passed through when boolean. |
 | `propagate` | `boolean` | Passed through when boolean. |
@@ -56,4 +56,3 @@ lui.animatePresence(props?, children?)
 <Tip>
   Use stable keys for lists. `ui.foreach(..., { keyBy = 'id' })` is the easiest path for animated list items.
 </Tip>
-

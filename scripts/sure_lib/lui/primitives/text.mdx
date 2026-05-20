@@ -34,8 +34,8 @@ lui.text(value, props?)
 
 | Prop | Type | Description |
 | --- | --- | --- |
-| `value` | `string | number | reactive getter` | Text content. Passed as the first argument in Lua helpers. |
-| `tone` | `'default' | 'muted'` | `muted` renders smaller muted text. Defaults to `default`. |
+| `value` | `string \| number \| reactive getter` | Text content. Passed as the first argument in Lua helpers. |
+| `tone` | `'default' \| 'muted'` | `muted` renders smaller muted text. Defaults to `default`. |
 | `className` | `string` | Appends runtime utility classes to the default text class. |
 | `style` | `table` | Inline style table forwarded to the renderer. |
 | `font`, `color`, `theme`, `vars` | mixed | Common LUI style props handled by the renderer. |
@@ -43,4 +43,3 @@ lui.text(value, props?)
 <Tip>
   Use `ui.typography` for headings, lead copy, code-style text, or semantic variants. Use `ui.text` for short paragraph text.
 </Tip>
-

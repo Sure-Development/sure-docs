@@ -36,12 +36,12 @@ lui.button(label, onPress, props?)
 
 | Prop | Type | Description |
 | --- | --- | --- |
-| `label` | `string | reactive getter` | Button text. Passed as the first argument. |
+| `label` | `string \| reactive getter` | Button text. Passed as the first argument. |
 | `onPress` | `function(payload)` | Lua callback called when the button is clicked. |
-| `variant` | `'primary' | 'ghost'` | Visual style. Defaults to `primary`. |
+| `variant` | `'primary' \| 'ghost'` | Visual style. Defaults to `primary`. |
 | `icon`, `iconComponent`, `startIcon`, `startIconComponent` | icon | Leading icon. |
 | `endIcon`, `endIconComponent` | icon | Trailing icon. |
-| `iconPosition` | `'start' | 'end'` | Moves the primary icon to the end when set to `end`. |
+| `iconPosition` | `'start' \| 'end'` | Moves the primary icon to the end when set to `end`. |
 | `labelClassName` | `string` | Extra class for the label span. |
 | `iconClassName`, `startIconClassName`, `endIconClassName` | `string` | Extra icon slot classes. |
 | `className`, `style` | mixed | Common LUI styling props. |
@@ -64,4 +64,3 @@ ui.button('Save', onSave, {
 <Info>
   `motionButton` uses the MotionNode renderer but keeps the same `label`, `onPress`, and icon conventions.
 </Info>
-

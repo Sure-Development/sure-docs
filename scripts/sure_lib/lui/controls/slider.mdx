@@ -5,7 +5,7 @@ description: "Range slider with numeric Lua onChange payloads"
 
 # Slider
 
-`Slider` renders a range input with custom track, range, and thumb surfaces. It sends `{ value = number }` to Lua on change.
+`Slider` renders a range input with custom track, range, and thumb surfaces. It sends a payload with `value = number` to Lua on change.
 
 ```lua
 local amount, setAmount = track.state('amount', 3)
@@ -46,11 +46,11 @@ lui.slider(props)
 
 | Prop | Type | Description |
 | --- | --- | --- |
-| `value` | `number | reactive getter` | Current value. Defaults to `min`. |
+| `value` | `number \| reactive getter` | Current value. Defaults to `min`. |
 | `min` | `number` | Minimum value. Defaults to `0`. |
 | `max` | `number` | Maximum value. Defaults to `100`. |
 | `step` | `number` | Step size. Defaults to `1`. |
-| `onChange` | `function(payload)` | Receives `{ value = number }`. |
+| `onChange` | `function(payload)` | Receives a payload with `value = number`. |
 | `thumbIcon`, `thumbIconComponent`, `icon`, `iconComponent` | icon | Thumb icon. |
 | `rangeIcon`, `rangeIconComponent`, `fillIcon`, `fillIconComponent` | icon | Icon rendered inside the filled range. |
 | `trackClassName` | `string` | Track class. |
@@ -61,4 +61,3 @@ lui.slider(props)
 <Info>
   If `max` equals `min`, progress is treated as `0` to avoid invalid division.
 </Info>
-

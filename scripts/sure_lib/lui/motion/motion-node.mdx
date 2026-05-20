@@ -57,14 +57,13 @@ MotionNode forwards these Framer Motion props when present:
 
 | Prop | Type | Description |
 | --- | --- | --- |
-| `as` | `'article' | 'button' | 'div' | 'li' | 'p' | 'section' | 'span' | 'ul'` | Motion element. Invalid values fall back to `div`. |
+| `as` | `'article' \| 'button' \| 'div' \| 'li' \| 'p' \| 'section' \| 'span' \| 'ul'` | Motion element. Invalid values fall back to `div`. |
 | `classBase` | `string` | Base class used before `className`. |
-| `label` | `string | reactive getter` | Used by `motionButton` and `motionText` when there are no children. |
+| `label` | `string \| reactive getter` | Used by `motionButton` and `motionText` when there are no children. |
 | `onPress` | `function(payload)` | Used by `motionButton`; click events route through LUI event handling. |
 | `icon`, `iconComponent`, `startIcon`, `endIcon` | icon | Icon slots for button-like motion nodes. |
-| `iconPosition` | `'start' | 'end'` | Moves primary icon to the end. |
+| `iconPosition` | `'start' \| 'end'` | Moves primary icon to the end. |
 
 <Info>
   If a MotionNode has children, it renders the children. If it has no children, it renders label and icon slots.
 </Info>
-

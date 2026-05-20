@@ -5,7 +5,7 @@ description: "Dropdown select with string or object options"
 
 # Select
 
-`Select` renders a dropdown control and sends `{ value = selectedValue }` to Lua when the user chooses an option.
+`Select` renders a dropdown control and sends a payload with `value` to Lua when the user chooses an option.
 
 ```lua
 local tone, setTone = track.state('tone', 'success')
@@ -43,9 +43,9 @@ lui.select(props)
 
 | Prop | Type | Description |
 | --- | --- | --- |
-| `value` | `string | reactive getter` | Selected value. |
-| `options` | `string[] | { label, value }[] | reactive getter` | Options. Strings become both label and value. |
-| `onChange` | `function(payload)` | Receives `{ value = string }`. |
+| `value` | `string \| reactive getter` | Selected value. |
+| `options` | `string[] \| object option[] \| reactive getter` | Options. Object options use `label` and `value`. Strings become both label and value. |
+| `onChange` | `function(payload)` | Receives a payload with `value = string`. |
 | `icon`, `iconComponent` | icon | Default open/closed icon. |
 | `closedIcon`, `closedIconComponent` | icon | Icon while closed. |
 | `openIcon`, `openIconComponent`, `activeIcon`, `activeIconComponent` | icon | Icon while open. |
@@ -59,4 +59,3 @@ lui.select(props)
 <Tip>
   `Select` keeps a local selected value for immediate UI feedback, then syncs back to reactive Lua state through `onChange`.
 </Tip>
-
